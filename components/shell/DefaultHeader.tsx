@@ -69,7 +69,7 @@ export function DefaultHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#e8e4df] bg-white/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-[72px]">
         {/* Logo + brand */}
         <a
@@ -82,7 +82,7 @@ export function DefaultHeader() {
             alt="Jamdesk"
             className="h-8 w-auto"
           />
-          <span className="text-xs font-medium text-[#5a6f77]">
+          <span className="text-xs font-medium text-muted-foreground">
             Utilities
           </span>
         </a>
@@ -93,7 +93,7 @@ export function DefaultHeader() {
             <a
               key={link.href}
               href={link.href}
-              className="rounded-md px-3 py-1.5 text-sm text-[#5a6f77] transition-colors hover:text-[#1b3139]"
+              className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
               {...(link.external
                 ? { target: '_blank', rel: 'noopener noreferrer' }
                 : {})}
@@ -110,7 +110,7 @@ export function DefaultHeader() {
         {/* Mobile hamburger */}
         <button
           type="button"
-          className="min-h-[44px] min-w-[44px] rounded-md p-2.5 text-[#5a6f77] transition-colors hover:text-[#1b3139] sm:hidden"
+          className="min-h-[44px] min-w-[44px] rounded-md p-2.5 text-muted-foreground transition-colors hover:text-foreground sm:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileMenuOpen}
@@ -121,12 +121,12 @@ export function DefaultHeader() {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <nav className="border-t border-[#e8e4df] bg-white px-4 py-3 sm:hidden">
+        <nav className="border-t border-border bg-card px-4 py-3 sm:hidden">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="flex min-h-[44px] items-center gap-2 rounded-md px-3 py-2 text-sm text-[#5a6f77] transition-colors hover:text-[#1b3139]"
+              className="flex min-h-[44px] items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
               onClick={() => setMobileMenuOpen(false)}
               {...(link.external
                 ? { target: '_blank', rel: 'noopener noreferrer' }

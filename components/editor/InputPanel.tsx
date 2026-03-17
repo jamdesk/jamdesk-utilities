@@ -97,13 +97,13 @@ export function InputPanel({ value, onChange, onLoadSample, ariaLabel = 'MDX inp
       onDrop={handleDrop}
     >
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#e8e4df] px-3 py-2">
-        <span className="text-sm font-medium text-[#1b3139]">Input</span>
+      <div className="flex items-center justify-between border-b border-border px-3 py-2">
+        <span className="text-sm font-medium text-foreground">Input</span>
         <div className="flex items-center gap-1.5">
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="min-h-[44px] rounded-md px-2.5 py-1.5 text-sm text-[#5a6f77] transition-colors hover:bg-[#f3f0eb] hover:text-[#1b3139]"
+            className="min-h-[44px] rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
           >
             Upload
           </button>
@@ -111,7 +111,7 @@ export function InputPanel({ value, onChange, onLoadSample, ariaLabel = 'MDX inp
             <button
               type="button"
               onClick={onLoadSample}
-              className="min-h-[44px] rounded-md px-2.5 py-1.5 text-sm text-[#5a6f77] transition-colors hover:bg-[#f3f0eb] hover:text-[#1b3139]"
+              className="min-h-[44px] rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
               Load Sample
             </button>
@@ -119,7 +119,7 @@ export function InputPanel({ value, onChange, onLoadSample, ariaLabel = 'MDX inp
           <button
             type="button"
             onClick={() => setShowUrlInput((prev) => !prev)}
-            className="min-h-[44px] rounded-md px-2.5 py-1.5 text-sm text-[#5a6f77] transition-colors hover:bg-[#f3f0eb] hover:text-[#1b3139]"
+            className="min-h-[44px] rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             aria-expanded={showUrlInput}
           >
             Open from URL
@@ -129,7 +129,7 @@ export function InputPanel({ value, onChange, onLoadSample, ariaLabel = 'MDX inp
 
       {/* URL input bar */}
       {showUrlInput && (
-        <div className="flex items-center gap-2 border-b border-[#e8e4df] bg-[#f3f0eb] px-3 py-2">
+        <div className="flex items-center gap-2 border-b border-border bg-secondary px-3 py-2">
           <input
             type="url"
             value={url}
@@ -141,14 +141,14 @@ export function InputPanel({ value, onChange, onLoadSample, ariaLabel = 'MDX inp
               if (e.key === 'Enter') handleLoadFromUrl()
             }}
             placeholder="https://raw.githubusercontent.com/..."
-            className="min-h-[44px] flex-1 rounded-md border border-[#e8e4df] bg-white px-3 py-2 text-base text-[#1b3139] placeholder:text-[#8fa8b3] focus:outline-none focus:ring-2 focus:ring-[#ff3621]"
+            className="min-h-[44px] flex-1 rounded-md border border-border bg-card px-3 py-2 text-base text-foreground placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary"
             aria-label="URL to fetch MDX content from"
           />
           <button
             type="button"
             onClick={handleLoadFromUrl}
             disabled={urlLoading || !url.trim()}
-            className="min-h-[44px] rounded-md bg-[#ff3621] px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-[#eb1600] disabled:opacity-50"
+            className="min-h-[44px] rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-accent-light disabled:opacity-50"
           >
             {urlLoading ? 'Loading...' : 'Fetch'}
           </button>
@@ -171,8 +171,8 @@ export function InputPanel({ value, onChange, onLoadSample, ariaLabel = 'MDX inp
       {/* Editor area */}
       <div className="relative flex-1">
         {isDragging && (
-          <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-md border-2 border-dashed border-[#ff3621] bg-[#ff3621]/10">
-            <span className="text-sm font-medium text-[#ff3621]">
+          <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-md border-2 border-dashed border-primary bg-[#ff3621]/10">
+            <span className="text-sm font-medium text-primary">
               Drop .mdx or .md file
             </span>
           </div>

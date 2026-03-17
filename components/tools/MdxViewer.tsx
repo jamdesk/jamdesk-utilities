@@ -66,8 +66,8 @@ function PreviewPanel({
   return (
     <div className="flex h-full flex-col" aria-live="polite">
       {/* Header — matches Input panel header height */}
-      <div className="flex items-center justify-between border-b border-[#e8e4df] px-3 py-2">
-        <span className="text-sm font-medium text-[#1b3139]">Preview</span>
+      <div className="flex items-center justify-between border-b border-border px-3 py-2">
+        <span className="text-sm font-medium text-foreground">Preview</span>
       </div>
 
       {/* Preview area — dark themed like the editor panels */}

@@ -37,7 +37,7 @@ export default async function RootLayout({
           strategy="lazyOnload"
         />
       </head>
-      <body className="flex min-h-screen flex-col bg-[#faf8f5] text-[#1b3139] antialiased">
+      <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
         <CommandPalette />
         {siteChrome ? (
           <>

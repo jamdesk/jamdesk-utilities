@@ -57,6 +57,11 @@
   --color-accent-light: var(--accent-light);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-warning-dark: var(--warning-dark);
+  --color-footer-bg: var(--footer-bg);
+  --color-footer-text: var(--footer-text);
+  --color-footer-muted: var(--footer-muted);
+  --color-footer-separator: var(--footer-separator);
 }
 
 /* Light-first: marketing-aligned color scheme */
@@ -104,6 +109,11 @@
   --accent-light: #eb1600;
   --success: #16a34a;
   --warning: #f0a050;
+  --warning-dark: #b07020;
+  --footer-bg: #1b3139;
+  --footer-text: #c5d3d9;
+  --footer-muted: #8fa8b3;
+  --footer-separator: #3a5563;
 }
 
 @layer base {
