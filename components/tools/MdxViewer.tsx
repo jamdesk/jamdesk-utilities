@@ -7,58 +7,13 @@ import { MobileTabToggle } from '@/components/editor/MobileTabToggle'
 import { EngineErrorBoundary } from '@/components/editor/EngineErrorBoundary'
 import { MdxRenderer } from './viewer/MdxRenderer'
 import { trackEvent } from '@/lib/analytics'
-
-const SAMPLE_MDX = `---
-title: API Reference
-description: Complete API documentation
----
-
-import { Callout } from '@/components/Callout'
-import { CodeBlock } from '@/components/CodeBlock'
-
-# API Reference
-
-The API provides access to all **core resources**. All endpoints return JSON.
-
-<Callout type="warning">
-  Authentication is required for all endpoints. See the [auth guide](/docs/auth).
-</Callout>
-
-## Endpoints
-
-### GET /api/users
-
-Returns a list of users. Supports pagination via \`?page=1&limit=20\`.
-
-\`\`\`bash
-curl -H "Authorization: Bearer <token>" \\
-  https://api.example.com/api/users
-\`\`\`
-
-### POST /api/users
-
-Create a new user:
-
-\`\`\`json
-{
-  "name": "Jane Doe",
-  "email": "jane@example.com"
-}
-\`\`\`
-
-<CodeBlock title="Response" />
-
-> **Note:** Rate limiting applies. See [rate limits](/docs/rate-limits) for details.
-
----
-
-For more information, visit the [full documentation](/docs).
-`
+import { viewerSample } from '@/lib/samples'
+import { getContentFromHash, setContentHash } from '@/lib/share'
 
 type EngineModule = typeof import('@/lib/mdx-engine')
 
 export function MdxViewer() {
-  const [input, setInput] = useState(SAMPLE_MDX)
+  const [input, setInput] = useState(() => getContentFromHash() ?? viewerSample)
   const [ast, setAst] = useState<Root | null>(null)
   const [parseError, setParseError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'input' | 'output'>('input')
@@ -90,8 +45,14 @@ export function MdxViewer() {
     runParse(input)
   }, [input, runParse])
 
+  const handleInputChange = useCallback((value: string) => {
+    setInput(value)
+    setContentHash(value)
+  }, [])
+
   const handleLoadSample = useCallback(() => {
-    setInput(SAMPLE_MDX)
+    setInput(viewerSample)
+    setContentHash(viewerSample)
     trackEvent('Load Sample', { tool: 'MDX Viewer' })
   }, [])
 
@@ -107,7 +68,7 @@ export function MdxViewer() {
         >
           <InputPanel
             value={input}
-            onChange={setInput}
+            onChange={handleInputChange}
             onLoadSample={handleLoadSample}
             ariaLabel="MDX input editor"
           />

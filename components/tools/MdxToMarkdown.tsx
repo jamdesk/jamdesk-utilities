@@ -6,57 +6,13 @@ import { OutputPanel } from '@/components/editor/OutputPanel'
 import { MobileTabToggle } from '@/components/editor/MobileTabToggle'
 import { EngineErrorBoundary } from '@/components/editor/EngineErrorBoundary'
 import { trackEvent } from '@/lib/analytics'
-
-const SAMPLE_MDX = `---
-title: Migration Guide
-description: How to migrate from v1 to v2
----
-
-import { Steps } from '@/components/Steps'
-import { Callout } from '@/components/Callout'
-
-export const version = '2.0'
-
-# Migration Guide
-
-Follow these steps to migrate your project from **v1** to **v2**.
-
-<Callout type="warning">
-  Back up your data before starting the migration.
-</Callout>
-
-<Steps>
-
-## Update dependencies
-
-\`\`\`bash
-npm install my-package@latest
-\`\`\`
-
-## Update configuration
-
-Replace the old config format:
-
-\`\`\`json
-{
-  "version": 2,
-  "features": ["new-api"]
-}
-\`\`\`
-
-</Steps>
-
-<Callout type="info">
-  Need help? Visit our [support page](/support).
-</Callout>
-
-For a complete list of changes, see the [changelog](/changelog).
-`
+import { mdxToMarkdownSample } from '@/lib/samples'
+import { getContentFromHash, setContentHash } from '@/lib/share'
 
 type EngineModule = typeof import('@/lib/mdx-engine')
 
 export function MdxToMarkdown() {
-  const [input, setInput] = useState(SAMPLE_MDX)
+  const [input, setInput] = useState(() => getContentFromHash() ?? mdxToMarkdownSample)
   const [output, setOutput] = useState('')
   const [activeTab, setActiveTab] = useState<'input' | 'output'>('input')
   const engineRef = useRef<EngineModule | null>(null)
@@ -86,8 +42,14 @@ export function MdxToMarkdown() {
     runStrip(input)
   }, [input, runStrip])
 
+  const handleInputChange = useCallback((value: string) => {
+    setInput(value)
+    setContentHash(value)
+  }, [])
+
   const handleLoadSample = useCallback(() => {
-    setInput(SAMPLE_MDX)
+    setInput(mdxToMarkdownSample)
+    setContentHash(mdxToMarkdownSample)
     trackEvent('Load Sample', { tool: 'MDX to Markdown' })
   }, [])
 
@@ -103,7 +65,7 @@ export function MdxToMarkdown() {
         >
           <InputPanel
             value={input}
-            onChange={setInput}
+            onChange={handleInputChange}
             onLoadSample={handleLoadSample}
             ariaLabel="MDX input editor"
           />

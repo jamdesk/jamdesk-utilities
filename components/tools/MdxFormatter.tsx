@@ -7,49 +7,13 @@ import { EditorToolbar } from '@/components/editor/EditorToolbar'
 import { MobileTabToggle } from '@/components/editor/MobileTabToggle'
 import { EngineErrorBoundary } from '@/components/editor/EngineErrorBoundary'
 import { trackEvent } from '@/lib/analytics'
-
-const SAMPLE_MDX = `---
-title: Getting Started
-description: Learn how to set up your project
----
-
-import { Card } from '@/components/Card'
-import { Steps } from '@/components/Steps'
-
-# Getting Started
-
-Welcome to the **getting started** guide. Follow these steps to set up your project.
-
-<Steps>
-
-## Install dependencies
-
-\`\`\`bash
-npm install my-package
-\`\`\`
-
-## Configure your project
-
-Create a \`config.json\` file in your project root:
-
-\`\`\`json
-{
-  "name": "my-project",
-  "version": "1.0.0"
-}
-\`\`\`
-
-</Steps>
-
-<Card title="Need help?">
-  Check out our [support page](/support) for more information.
-</Card>
-`
+import { formatterSample } from '@/lib/samples'
+import { getContentFromHash, setContentHash } from '@/lib/share'
 
 type FormatModule = typeof import('@/lib/mdx-formatter')
 
 export function MdxFormatter() {
-  const [input, setInput] = useState(SAMPLE_MDX)
+  const [input, setInput] = useState(() => getContentFromHash() ?? formatterSample)
   const [output, setOutput] = useState('')
   const [tabWidth, setTabWidth] = useState(2)
   const [activeTab, setActiveTab] = useState<'input' | 'output'>('input')
@@ -74,8 +38,14 @@ export function MdxFormatter() {
     runFormat(input, tabWidth)
   }, [input, tabWidth, runFormat])
 
+  const handleInputChange = useCallback((value: string) => {
+    setInput(value)
+    setContentHash(value)
+  }, [])
+
   const handleLoadSample = useCallback(() => {
-    setInput(SAMPLE_MDX)
+    setInput(formatterSample)
+    setContentHash(formatterSample)
     trackEvent('Load Sample', { tool: 'MDX Formatter' })
   }, [])
 
@@ -100,7 +70,7 @@ export function MdxFormatter() {
         >
           <InputPanel
             value={input}
-            onChange={setInput}
+            onChange={handleInputChange}
             onLoadSample={handleLoadSample}
             ariaLabel="MDX input editor"
           />

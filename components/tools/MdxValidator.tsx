@@ -6,36 +6,14 @@ import { EditorToolbar } from '@/components/editor/EditorToolbar'
 import { MobileTabToggle } from '@/components/editor/MobileTabToggle'
 import { EngineErrorBoundary } from '@/components/editor/EngineErrorBoundary'
 import { trackEvent } from '@/lib/analytics'
+import { validatorSample } from '@/lib/samples'
+import { getContentFromHash, setContentHash } from '@/lib/share'
 import type { ValidationError, ValidationResult } from '@/lib/mdx-engine'
-
-const SAMPLE_MDX = `---
-title: Example Page
-description: A sample MDX file to validate
----
-
-import { Alert } from '@/components/Alert'
-
-# Welcome
-
-This is a **valid** MDX file with a JSX component:
-
-<Alert type="info">
-  This is an informational alert with [a link](/docs).
-</Alert>
-
-## Code Example
-
-\`\`\`tsx
-function Hello() {
-  return <div>Hello World</div>
-}
-\`\`\`
-`
 
 type EngineModule = typeof import('@/lib/mdx-engine')
 
 export function MdxValidator() {
-  const [input, setInput] = useState(SAMPLE_MDX)
+  const [input, setInput] = useState(() => getContentFromHash() ?? validatorSample)
   const [result, setResult] = useState<ValidationResult | null>(null)
   const [activeTab, setActiveTab] = useState<'input' | 'output'>('input')
   const engineRef = useRef<EngineModule | null>(null)
@@ -59,8 +37,14 @@ export function MdxValidator() {
     runValidation(input)
   }, [input, runValidation])
 
+  const handleInputChange = useCallback((value: string) => {
+    setInput(value)
+    setContentHash(value)
+  }, [])
+
   const handleLoadSample = useCallback(() => {
-    setInput(SAMPLE_MDX)
+    setInput(validatorSample)
+    setContentHash(validatorSample)
     trackEvent('Load Sample', { tool: 'MDX Validator' })
   }, [])
 
@@ -115,7 +99,7 @@ export function MdxValidator() {
         >
           <InputPanel
             value={input}
-            onChange={setInput}
+            onChange={handleInputChange}
             onLoadSample={handleLoadSample}
             ariaLabel="MDX input editor"
           />
