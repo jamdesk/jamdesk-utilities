@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { InputPanel } from '@/components/editor/InputPanel'
 import { OutputPanel } from '@/components/editor/OutputPanel'
 import { EditorToolbar } from '@/components/editor/EditorToolbar'
