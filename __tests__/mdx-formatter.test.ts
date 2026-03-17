@@ -87,6 +87,23 @@ describe('formatMdx', () => {
     expect(result.formatted).toContain('Line 1200:')
   })
 
+  it('strips excessive leading whitespace from markdown lines', async () => {
+    const input = '          # Hello World\n          Some text with lots of spaces\n          - item one\n          - item two'
+    const result = await formatMdx(input)
+    expect(result.error).toBeNull()
+    expect(result.formatted).toContain('# Hello World')
+    expect(result.formatted).not.toMatch(/^ {4,}#/m) // no excessive indent on heading
+    expect(result.formatted).toContain('- item one')
+  })
+
+  it('preserves code block content', async () => {
+    const input = '```\nsome raw text\n  with indentation\n```'
+    const result = await formatMdx(input)
+    expect(result.error).toBeNull()
+    expect(result.formatted).toContain('some raw text')
+    expect(result.formatted).toContain('```')
+  })
+
   it('formats MDX with GFM tables', async () => {
     const input = `# Table Example
 
