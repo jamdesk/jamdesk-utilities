@@ -46,6 +46,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: tool.seoTitle,
       description: tool.seoDescription,
+      images: [`https://www.jamdesk.com/utilities/og/${tool.slug}.png`],
     },
   }
 }

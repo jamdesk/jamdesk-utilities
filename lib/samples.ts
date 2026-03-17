@@ -3,7 +3,7 @@
  * when no URL hash content is present.
  */
 
-/** Messy MDX with unsorted frontmatter, cramped JSX, bad indentation */
+/** Messy MDX with unsorted frontmatter, cramped JSX, bad indentation, extra blank lines */
 export const formatterSample = `---
 description: Learn how to set up your project
 sidebar_position: 1
@@ -12,34 +12,37 @@ tags: [setup, guide]
 ---
 
 import {Card} from '@/components/Card'
-import {Steps} from '@/components/Steps'
+import  {Steps}  from  '@/components/Steps'
 
-# Getting Started
 
-Welcome to the **getting started** guide.
 
-<Steps>
+         # Getting Started
 
-## Install dependencies
+   Welcome to the **getting started** guide.
+
+
+      <Steps>
+
+      ## Install dependencies
 
 \`\`\`bash
 npm install my-package
 \`\`\`
 
-## Configure your project
+         ## Configure your project
 
-Create a \`config.json\` file:
+   Create a \`config.json\` file:
 
 \`\`\`json
 {
-"name": "my-project",
-"version": "1.0.0"
+  "name": "my-project",
+  "version": "1.0.0"
 }
 \`\`\`
 
-</Steps>
-<Card title="Need help?">
-Check out our [support page](/support) for more information.
+      </Steps>
+<Card   title="Need help?"  >
+   Check out our [support page](/support) for more information.
 </Card>
 `
 

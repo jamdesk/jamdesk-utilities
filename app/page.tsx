@@ -34,6 +34,7 @@ export const metadata: Metadata = {
     title: 'MDX Utilities — Free, Open Source Tools for MDX | Jamdesk',
     description:
       'Free, open-source MDX tools. Format, validate, preview, and convert MDX files — all client-side.',
+    images: ['https://www.jamdesk.com/utilities/og/hub.png'],
   },
 }
 
