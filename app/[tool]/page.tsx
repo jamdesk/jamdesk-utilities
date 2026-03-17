@@ -4,6 +4,7 @@ import { tools, getToolBySlug } from '@/lib/tools'
 import { toolSeoContent } from '@/lib/tool-seo-content'
 import { FaqSection } from '@/components/seo/FaqSection'
 import { ConversionCta } from '@/components/seo/ConversionCta'
+import { ToolEditor } from '@/components/tools/ToolEditor'
 
 export default async function ToolPage({
   params,
@@ -33,14 +34,9 @@ export default async function ToolPage({
         <p className="text-lg text-[#6b6b78]">{tool.description}</p>
       </section>
 
-      {/* Editor placeholder */}
+      {/* Editor */}
       <section className="mx-auto max-w-5xl px-6 pb-12">
-        <div
-          id="tool-editor"
-          className="flex min-h-[400px] items-center justify-center rounded-xl border border-dashed border-[#2a2640] bg-[#1a1725]/50 text-sm text-[#4a4858]"
-        >
-          Tool editor will be mounted here
-        </div>
+        <ToolEditor slug={slug} />
       </section>
 
       {/* Conversion CTA */}
