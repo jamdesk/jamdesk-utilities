@@ -1,29 +1,152 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
 import { tools } from '@/lib/tools'
+import { JsonLdScript } from '@/components/seo/JsonLdScript'
+import { FaqSection } from '@/components/seo/FaqSection'
+
+export const metadata: Metadata = {
+  title: {
+    absolute: 'MDX Utilities — Free, Open Source Tools for MDX | Jamdesk',
+  },
+  description:
+    'Free, open-source MDX tools. Format, validate, preview, and convert MDX files. All processing happens client-side — your data never leaves your browser.',
+  alternates: {
+    canonical: 'https://www.jamdesk.com/utilities',
+  },
+  openGraph: {
+    title: 'MDX Utilities — Free, Open Source Tools for MDX | Jamdesk',
+    description:
+      'Free, open-source MDX tools. Format, validate, preview, and convert MDX files — all client-side.',
+    url: 'https://www.jamdesk.com/utilities',
+    siteName: 'Jamdesk',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.jamdesk.com/utilities/og/hub.png',
+        width: 1200,
+        height: 630,
+        alt: 'MDX Utilities by Jamdesk',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MDX Utilities — Free, Open Source Tools for MDX | Jamdesk',
+    description:
+      'Free, open-source MDX tools. Format, validate, preview, and convert MDX files — all client-side.',
+  },
+}
+
+const FAQ_ITEMS = [
+  {
+    question: 'What is MDX?',
+    answer:
+      'MDX is a format that combines Markdown with JSX. It lets you write content using familiar Markdown syntax while embedding React components directly in your documents. MDX is widely used for documentation sites, blogs, and content-driven applications.',
+  },
+  {
+    question: 'Are these tools free?',
+    answer:
+      'Yes, all MDX Utilities are completely free to use. The project is open source under the Apache 2.0 license, so you can also inspect the source code and contribute on GitHub.',
+  },
+  {
+    question: 'Is my data safe?',
+    answer:
+      'All processing happens entirely in your browser. Your MDX content is never sent to a server, never stored, and never logged. You can verify this by inspecting the network tab in your browser developer tools.',
+  },
+  {
+    question: 'Can I use these tools offline?',
+    answer:
+      'Once the page has loaded, the tools work without an internet connection since all processing is client-side. However, you need an initial page load to download the JavaScript.',
+  },
+  {
+    question: 'Are the tools open source?',
+    answer:
+      'Yes. MDX Utilities is open source under the Apache 2.0 license. You can view the source code, report issues, and contribute at github.com/jamdesk/jamdesk-utilities.',
+  },
+]
 
 export default function Home() {
   return (
-    <main className="mx-auto max-w-4xl px-6 py-16">
-      <h1 className="mb-4 text-3xl font-bold text-[#e0e0e4]">
-        MDX Utilities
-      </h1>
-      <p className="mb-12 text-lg text-[#6b6b78]">
-        Free, open-source tools for working with MDX files.
-      </p>
-      <div className="grid gap-6 sm:grid-cols-2">
-        {tools.map((tool) => (
-          <a
-            key={tool.slug}
-            href={`/utilities/${tool.slug}`}
-            className="rounded-xl border border-[#2a2640] bg-[#1a1725] p-6 transition-colors hover:border-[#7c3aed]/50"
-          >
-            <span className="mb-3 block text-2xl">{tool.icon}</span>
-            <h2 className="mb-1 text-lg font-semibold text-[#e0e0e4]">
-              {tool.name}
-            </h2>
-            <p className="text-sm text-[#6b6b78]">{tool.description}</p>
-          </a>
-        ))}
-      </div>
-    </main>
+    <>
+      <JsonLdScript type="collection" tools={tools} />
+
+      {/* Hero */}
+      <section className="mx-auto max-w-4xl px-6 pb-8 pt-16 text-center">
+        <h1 className="mb-4 text-4xl font-bold tracking-tight text-[#e0e0e4] sm:text-5xl">
+          MDX Utilities
+        </h1>
+        <p className="mb-6 text-lg text-[#6b6b78]">
+          Free, open source tools for MDX
+        </p>
+        <span className="inline-block rounded-full border border-[#2a2640] bg-[#1a1725] px-4 py-1.5 text-xs text-[#6b6b78]">
+          Client-side &middot; No ads &middot; Open source
+        </span>
+      </section>
+
+      {/* Tool grid */}
+      <section className="mx-auto max-w-4xl px-6 pb-16">
+        <div className="grid gap-6 sm:grid-cols-2">
+          {tools.map((tool) => (
+            <Link
+              key={tool.slug}
+              href={`/${tool.slug}`}
+              className="group rounded-xl border border-[#2a2640] bg-[#1a1725] p-6 transition-all hover:border-[#7c3aed]/50 hover:shadow-[0_0_24px_-6px_rgba(124,58,237,0.15)]"
+            >
+              <span className="mb-3 block text-2xl">{tool.icon}</span>
+              <h2 className="mb-1 text-lg font-semibold text-[#e0e0e4] transition-colors group-hover:text-[#a78bfa]">
+                {tool.name}
+              </h2>
+              <p className="text-sm text-[#6b6b78]">{tool.description}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* What is MDX? */}
+      <section className="mx-auto max-w-3xl px-6 pb-12">
+        <h2 className="mb-4 text-2xl font-bold text-[#e0e0e4]">
+          What is MDX?
+        </h2>
+        <p className="leading-relaxed text-[#6b6b78]">
+          MDX extends standard Markdown by letting you embed JSX components
+          directly in your content. Write headings, lists, and paragraphs in
+          Markdown, then drop in interactive React components wherever you need
+          them — tabs, callouts, code playgrounds, or anything else your
+          framework supports. MDX files are compiled to JavaScript, so they work
+          with any React-based framework including Next.js, Gatsby, and Remix.
+          The format has become the standard for documentation sites, design
+          systems, and content-heavy applications where authors want the
+          simplicity of Markdown with the flexibility of components.
+        </p>
+      </section>
+
+      {/* Why use MDX for documentation? */}
+      <section className="mx-auto max-w-3xl px-6 pb-12">
+        <h2 className="mb-4 text-2xl font-bold text-[#e0e0e4]">
+          Why use MDX for documentation?
+        </h2>
+        <p className="leading-relaxed text-[#6b6b78]">
+          Documentation written in MDX stays readable as source files while
+          producing rich, interactive output. Authors write in Markdown they
+          already know, and engineers define reusable components for API
+          references, configuration tables, or live code examples. Version
+          control works naturally since MDX is plain text. Frontmatter gives you
+          structured metadata for titles, descriptions, and navigation without a
+          separate CMS. Because MDX compiles to React, you get type checking,
+          component composition, and the full npm ecosystem. Teams that adopt MDX
+          for docs find that content stays closer to the codebase, updates ship
+          faster, and the gap between writing and publishing narrows
+          significantly.
+        </p>
+      </section>
+
+      {/* FAQ */}
+      <section className="mx-auto max-w-3xl px-6 pb-16">
+        <h2 className="mb-6 text-2xl font-bold text-[#e0e0e4]">
+          Frequently Asked Questions
+        </h2>
+        <FaqSection items={FAQ_ITEMS} />
+      </section>
+    </>
   )
 }
