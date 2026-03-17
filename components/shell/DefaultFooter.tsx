@@ -15,16 +15,23 @@ export function DefaultFooter() {
         </div>
         <div className="flex items-center gap-4">
           <a
+            href="https://www.jamdesk.com/blog"
+            className="text-footer-text transition-colors hover:text-white"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Blog
+          </a>
+          <span className="text-footer-separator" aria-hidden="true">|</span>
+          <a
             href="https://github.com/jamdesk/jamdesk-utilities"
             className="text-footer-text transition-colors hover:text-white"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Open Source on GitHub
+            GitHub
           </a>
-          <span className="text-footer-separator" aria-hidden="true">
-            |
-          </span>
+          <span className="text-footer-separator" aria-hidden="true">|</span>
           <span>Apache 2.0</span>
         </div>
       </div>

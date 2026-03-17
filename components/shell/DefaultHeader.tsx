@@ -78,7 +78,7 @@ export function DefaultHeader() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/logo-light.png"
+            src="/utilities/logo-light.png"
             alt="Jamdesk"
             className="h-8 w-auto"
           />

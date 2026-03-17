@@ -100,9 +100,9 @@ function ValidationOutput({
 
   return (
     <div className="flex h-full flex-col" aria-live="polite">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border px-3 py-2">
-        <span className="text-sm font-medium text-foreground">
+      {/* Header — dark to match editor body */}
+      <div className="flex min-h-[44px] items-center justify-between bg-[#0f0d17] px-3 py-2">
+        <span className="text-sm font-medium text-[#e0e0e4]">
           {result.valid ? 'Validation Result' : `${result.errors.length} ${result.errors.length === 1 ? 'Issue' : 'Issues'}`}
         </span>
         {result.errors.length > 0 && (
@@ -110,14 +110,14 @@ function ValidationOutput({
             <button
               type="button"
               onClick={onCopy}
-              className="min-h-[44px] rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="rounded-md px-2.5 py-1.5 text-sm text-[#6b6b78] transition-colors hover:bg-[#1a1725] hover:text-[#e0e0e4]"
             >
               Copy
             </button>
             <button
               type="button"
               onClick={onDownload}
-              className="min-h-[44px] rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="rounded-md px-2.5 py-1.5 text-sm text-[#6b6b78] transition-colors hover:bg-[#1a1725] hover:text-[#e0e0e4]"
             >
               Download
             </button>

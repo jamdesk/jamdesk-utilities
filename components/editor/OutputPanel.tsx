@@ -37,15 +37,15 @@ export function OutputPanel({
 
   return (
     <div className="flex h-full flex-col" aria-live="polite">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border px-3 py-2">
-        <span className="text-sm font-medium text-foreground">Output</span>
+      {/* Header — dark to match editor body */}
+      <div className="flex min-h-[44px] items-center justify-between bg-[#0f0d17] px-3 py-2">
+        <span className="text-sm font-medium text-[#e0e0e4]">Output</span>
         <div className="flex items-center gap-1.5">
           <button
             type="button"
             onClick={handleCopy}
             disabled={!value}
-            className="min-h-[44px] rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground disabled:opacity-50"
+            className="rounded-md px-2.5 py-1.5 text-sm text-[#6b6b78] transition-colors hover:bg-[#1a1725] hover:text-[#e0e0e4] disabled:opacity-50"
           >
             {copied ? 'Copied!' : 'Copy'}
           </button>
@@ -53,7 +53,7 @@ export function OutputPanel({
             type="button"
             onClick={handleDownload}
             disabled={!value}
-            className="min-h-[44px] rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground disabled:opacity-50"
+            className="rounded-md px-2.5 py-1.5 text-sm text-[#6b6b78] transition-colors hover:bg-[#1a1725] hover:text-[#e0e0e4] disabled:opacity-50"
           >
             Download
           </button>
