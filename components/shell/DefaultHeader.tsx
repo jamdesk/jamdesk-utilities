@@ -120,7 +120,7 @@ export function DefaultHeader() {
                 : {})}
             >
               {link.label === 'GitHub' ? (
-                <GitHubIcon />
+                <span aria-label="GitHub repository"><GitHubIcon /></span>
               ) : (
                 link.label
               )}
@@ -131,7 +131,7 @@ export function DefaultHeader() {
         {/* Mobile hamburger */}
         <button
           type="button"
-          className="rounded-md p-1.5 text-[#6b6b78] transition-colors hover:text-[#e0e0e4] sm:hidden"
+          className="min-h-[44px] min-w-[44px] rounded-md p-2.5 text-[#6b6b78] transition-colors hover:text-[#e0e0e4] sm:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileMenuOpen}
@@ -147,7 +147,7 @@ export function DefaultHeader() {
             <a
               key={link.href}
               href={link.href}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-[#6b6b78] transition-colors hover:text-[#e0e0e4]"
+              className="flex min-h-[44px] items-center gap-2 rounded-md px-3 py-2 text-sm text-[#6b6b78] transition-colors hover:text-[#e0e0e4]"
               onClick={() => setMobileMenuOpen(false)}
               {...(link.external
                 ? { target: '_blank', rel: 'noopener noreferrer' }
