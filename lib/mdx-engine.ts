@@ -18,16 +18,17 @@ export interface ValidationResult {
   errors: ValidationError[]
 }
 
+// Cached pipelines — unified processors are frozen after first use,
+// but parse() and process() handle that correctly.
+const baseProcessor = unified().use(remarkParse).use(remarkMdx).use(remarkFrontmatter)
+const validateProcessor = unified().use(remarkParse).use(remarkMdx).use(remarkFrontmatter).use(remarkStringify)
+const stripProcessor = unified().use(remarkParse).use(remarkMdx).use(remarkFrontmatter).use(remarkStripMdx).use(remarkStringify)
+
 /**
  * Parse MDX content into an AST tree.
  */
 export async function parseMdxToAst(input: string): Promise<Root> {
-  const processor = unified()
-    .use(remarkParse)
-    .use(remarkMdx)
-    .use(remarkFrontmatter)
-
-  return processor.parse(input)
+  return baseProcessor.parse(input)
 }
 
 /**
@@ -39,13 +40,7 @@ export async function validateMdx(input: string): Promise<ValidationResult> {
 
   try {
     // Parse the MDX -- remark-mdx throws VFileMessages for syntax errors
-    const processor = unified()
-      .use(remarkParse)
-      .use(remarkMdx)
-      .use(remarkFrontmatter)
-      .use(remarkStringify)
-
-    const file = await processor.process(input)
+    const file = await validateProcessor.process(input)
 
     // Collect any warnings/errors from the VFile
     for (const msg of file.messages) {
@@ -58,8 +53,7 @@ export async function validateMdx(input: string): Promise<ValidationResult> {
     }
   } catch (err: unknown) {
     // Parse errors (e.g., unclosed JSX tags) are thrown as VFileMessages
-    const line = extractLine(err)
-    const column = extractColumn(err)
+    const { line, column } = extractPosition(err)
     const message =
       err instanceof Error ? err.message : 'Unknown parse error'
 
@@ -83,112 +77,55 @@ export async function validateMdx(input: string): Promise<ValidationResult> {
  * self-closing components are removed entirely.
  */
 export async function stripMdxToMarkdown(input: string): Promise<string> {
-  const processor = unified()
-    .use(remarkParse)
-    .use(remarkMdx)
-    .use(remarkFrontmatter)
-    .use(remarkStripMdx)
-    .use(remarkStringify)
-
-  const file = await processor.process(input)
+  const file = await stripProcessor.process(input)
   return String(file)
 }
 
 /**
  * Remark plugin that strips MDX-specific nodes from the AST:
  * - Removes mdxjsEsm (import/export declarations)
+ * - Removes mdxFlowExpression and mdxTextExpression
  * - Unwraps mdxJsxFlowElement/mdxJsxTextElement with children
  * - Removes self-closing JSX elements (no children)
  */
 function remarkStripMdx() {
   return (tree: Root) => {
-    // Remove ESM nodes (imports/exports)
-    visit(tree, 'mdxjsEsm', (_node, index, parent) => {
-      if (parent && typeof index === 'number') {
-        parent.children.splice(index, 1)
-        return [SKIP, index]
-      }
-    })
+    visit(tree, (node, index, parent) => {
+      if (!parent || typeof index !== 'number') return
 
-    // Handle JSX flow elements (block-level)
-    visit(tree, 'mdxJsxFlowElement', (node, index, parent) => {
-      if (parent && typeof index === 'number') {
-        const jsxNode = node as unknown as { children: RootContent[] }
-        if (jsxNode.children && jsxNode.children.length > 0) {
-          // Unwrap: replace node with its children
-          parent.children.splice(
-            index,
-            1,
-            ...(jsxNode.children as typeof parent.children)
-          )
-          return [SKIP, index]
-        } else {
-          // Self-closing: remove entirely
+      switch (node.type) {
+        case 'mdxjsEsm':
+        case 'mdxFlowExpression':
+        case 'mdxTextExpression':
           parent.children.splice(index, 1)
           return [SKIP, index]
-        }
-      }
-    })
 
-    // Handle JSX text elements (inline)
-    visit(tree, 'mdxJsxTextElement', (node, index, parent) => {
-      if (parent && typeof index === 'number') {
-        const jsxNode = node as unknown as { children: RootContent[] }
-        if (jsxNode.children && jsxNode.children.length > 0) {
-          parent.children.splice(
-            index,
-            1,
-            ...(jsxNode.children as typeof parent.children)
-          )
-          return [SKIP, index]
-        } else {
-          parent.children.splice(index, 1)
+        case 'mdxJsxFlowElement':
+        case 'mdxJsxTextElement': {
+          const jsxNode = node as unknown as { children: RootContent[] }
+          if (jsxNode.children?.length > 0) {
+            parent.children.splice(index, 1, ...(jsxNode.children as typeof parent.children))
+          } else {
+            parent.children.splice(index, 1)
+          }
           return [SKIP, index]
         }
-      }
-    })
-
-    // Remove mdxFlowExpression and mdxTextExpression nodes
-    visit(tree, 'mdxFlowExpression', (_node, index, parent) => {
-      if (parent && typeof index === 'number') {
-        parent.children.splice(index, 1)
-        return [SKIP, index]
-      }
-    })
-
-    visit(tree, 'mdxTextExpression', (_node, index, parent) => {
-      if (parent && typeof index === 'number') {
-        parent.children.splice(index, 1)
-        return [SKIP, index]
       }
     })
   }
 }
 
-/** Extract line number from a VFileMessage-like error */
-function extractLine(err: unknown): number {
-  // VFileMessage has .line but it may be undefined
+/** Extract line and column from a VFileMessage-like error */
+function extractPosition(err: unknown): { line: number; column: number } {
   if (err && typeof err === 'object') {
     const e = err as Record<string, unknown>
-    if (typeof e.line === 'number') return e.line
-    // The `name` property may be "line:column"
+    const line = typeof e.line === 'number' ? e.line : undefined
+    const column = typeof e.column === 'number' ? e.column : undefined
+    if (line !== undefined && column !== undefined) return { line, column }
     if (typeof e.name === 'string') {
       const match = e.name.match(/^(\d+):(\d+)/)
-      if (match) return parseInt(match[1], 10)
+      if (match) return { line: parseInt(match[1], 10), column: parseInt(match[2], 10) }
     }
   }
-  return 1
-}
-
-/** Extract column number from a VFileMessage-like error */
-function extractColumn(err: unknown): number {
-  if (err && typeof err === 'object') {
-    const e = err as Record<string, unknown>
-    if (typeof e.column === 'number') return e.column
-    if (typeof e.name === 'string') {
-      const match = e.name.match(/^(\d+):(\d+)/)
-      if (match) return parseInt(match[2], 10)
-    }
-  }
-  return 1
+  return { line: 1, column: 1 }
 }

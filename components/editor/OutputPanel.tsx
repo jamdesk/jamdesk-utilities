@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from 'react'
 import { CodeEditor } from './CodeEditor'
+import { copyToClipboard } from '@/lib/clipboard'
+import { downloadAsFile } from '@/lib/download'
 import { trackEvent } from '@/lib/analytics'
 
 interface OutputPanelProps {
@@ -20,27 +22,16 @@ export function OutputPanel({
   const [copied, setCopied] = useState(false)
 
   const handleCopy = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(value)
+    const ok = await copyToClipboard(value)
+    if (ok) {
       setCopied(true)
       trackEvent('Copy', { tool: toolName })
       setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // Fallback: select-all approach won't work in readOnly CodeMirror,
-      // but clipboard API is broadly supported in modern browsers
     }
   }, [value, toolName])
 
   const handleDownload = useCallback(() => {
-    const blob = new Blob([value], { type: 'text/plain;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `output${downloadExtension}`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    downloadAsFile(value, `output${downloadExtension}`)
     trackEvent('Download', { tool: toolName })
   }, [value, toolName, downloadExtension])
 

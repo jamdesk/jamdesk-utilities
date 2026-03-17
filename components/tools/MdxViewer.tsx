@@ -1,88 +1,58 @@
 'use client'
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import type { Root } from 'mdast'
 import { InputPanel } from '@/components/editor/InputPanel'
-import { MobileTabToggle } from '@/components/editor/MobileTabToggle'
-import { EngineErrorBoundary } from '@/components/editor/EngineErrorBoundary'
+import { ToolLayout } from '@/components/tools/ToolLayout'
 import { MdxRenderer } from './viewer/MdxRenderer'
-import { trackEvent } from '@/lib/analytics'
+import { useToolInput } from '@/lib/use-tool-input'
+import { useLazyModule } from '@/lib/use-lazy-module'
 import { viewerSample } from '@/lib/samples'
-import { getContentFromHash, setContentHash } from '@/lib/share'
 
-type EngineModule = typeof import('@/lib/mdx-engine')
+const importEngine = () => import('@/lib/mdx-engine')
 
 export function MdxViewer() {
-  const [input, setInput] = useState(() => getContentFromHash() ?? viewerSample)
+  const { input, handleInputChange, handleLoadSample } = useToolInput(viewerSample, 'MDX Viewer')
   const [ast, setAst] = useState<Root | null>(null)
   const [parseError, setParseError] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<'input' | 'output'>('input')
-  const engineRef = useRef<EngineModule | null>(null)
+  const getEngine = useLazyModule(importEngine)
 
-  const runParse = useCallback(async (text: string) => {
-    if (!text.trim()) {
+  useEffect(() => {
+    let cancelled = false
+    if (!input.trim()) {
       setAst(null)
       setParseError(null)
       return
     }
-
-    if (!engineRef.current) {
-      engineRef.current = await import('@/lib/mdx-engine')
-    }
-
-    try {
-      const result = await engineRef.current.parseMdxToAst(text)
-      setAst(result)
-      setParseError(null)
-    } catch (err) {
-      setParseError(err instanceof Error ? err.message : 'Failed to parse MDX')
-      setAst(null)
-    }
-  }, [])
-
-  // Run parse on mount and whenever input changes
-  useEffect(() => {
-    runParse(input)
-  }, [input, runParse])
-
-  const handleInputChange = useCallback((value: string) => {
-    setInput(value)
-    setContentHash(value)
-  }, [])
-
-  const handleLoadSample = useCallback(() => {
-    setInput(viewerSample)
-    setContentHash(viewerSample)
-    trackEvent('Load Sample', { tool: 'MDX Viewer' })
-  }, [])
+    getEngine().then((engine) =>
+      engine.parseMdxToAst(input)
+    ).then((result) => {
+      if (!cancelled) {
+        setAst(result)
+        setParseError(null)
+      }
+    }).catch((err) => {
+      if (!cancelled) {
+        setParseError(err instanceof Error ? err.message : 'Failed to parse MDX')
+        setAst(null)
+      }
+    })
+    return () => { cancelled = true }
+  }, [input, getEngine])
 
   return (
-    <EngineErrorBoundary toolName="MDX Viewer">
-      <MobileTabToggle activeTab={activeTab} onTabChange={setActiveTab} />
-      <div className="grid min-h-[400px] flex-1 grid-cols-1 sm:grid-cols-2">
-        <div
-          id="input-panel"
-          role="tabpanel"
-          aria-labelledby="input-tab"
-          className={`border-r border-border ${activeTab === 'output' ? 'hidden sm:flex' : 'flex'} flex-col`}
-        >
-          <InputPanel
-            value={input}
-            onChange={handleInputChange}
-            onLoadSample={handleLoadSample}
-            ariaLabel="MDX input editor"
-          />
-        </div>
-        <div
-          id="output-panel"
-          role="tabpanel"
-          aria-labelledby="output-tab"
-          className={`${activeTab === 'input' ? 'hidden sm:flex' : 'flex'} flex-col`}
-        >
-          <PreviewPanel ast={ast} parseError={parseError} />
-        </div>
-      </div>
-    </EngineErrorBoundary>
+    <ToolLayout
+      toolName="MDX Viewer"
+      inputPanel={
+        <InputPanel
+          value={input}
+          onChange={handleInputChange}
+          onLoadSample={handleLoadSample}
+          ariaLabel="MDX input editor"
+        />
+      }
+      outputPanel={<PreviewPanel ast={ast} parseError={parseError} />}
+    />
   )
 }
 

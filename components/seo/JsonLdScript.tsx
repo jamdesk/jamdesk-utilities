@@ -1,13 +1,8 @@
 import type { Tool } from '@/lib/tools'
 
-interface JsonLdScriptProps {
-  type: 'collection' | 'tool'
-  tools: Tool[]
-  /** Required when type is 'tool' */
-  tool?: Tool
-  /** How-to content for tool pages */
-  howTo?: { title: string; content: string }
-}
+type JsonLdScriptProps =
+  | { type: 'collection'; tools: Tool[] }
+  | { type: 'tool'; tools: Tool[]; tool: Tool; howTo?: { title: string; content: string } }
 
 function buildCollectionSchema(tools: Tool[]) {
   return {
@@ -88,11 +83,11 @@ function buildHowToSchema(tool: Tool, howTo: { title: string; content: string })
  * Renders structured data for search engines.
  * Content is safe — built from our own static tool registry, not user input.
  */
-export function JsonLdScript({ type, tools, tool, howTo }: JsonLdScriptProps) {
+export function JsonLdScript(props: JsonLdScriptProps) {
   const schemas =
-    type === 'collection'
-      ? [buildCollectionSchema(tools)]
-      : [buildToolSchema(tool!), ...(howTo ? [buildHowToSchema(tool!, howTo)] : [])]
+    props.type === 'collection'
+      ? [buildCollectionSchema(props.tools)]
+      : [buildToolSchema(props.tool), ...(props.howTo ? [buildHowToSchema(props.tool, props.howTo)] : [])]
 
   return (
     <>

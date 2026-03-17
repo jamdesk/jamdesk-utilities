@@ -59,6 +59,7 @@ export default async function ToolLayout({
 }) {
   const { tool: slug } = await params
   const tool = getToolBySlug(slug)
+  const seoContent = tool ? toolSeoContent[tool.slug] : undefined
 
   return (
     <>
@@ -67,7 +68,7 @@ export default async function ToolLayout({
           type="tool"
           tools={tools}
           tool={tool}
-          howTo={toolSeoContent[tool.slug] ? { title: toolSeoContent[tool.slug].howToTitle, content: toolSeoContent[tool.slug].howToContent } : undefined}
+          howTo={seoContent ? { title: seoContent.howToTitle, content: seoContent.howToContent } : undefined}
         />
       )}
       {children}

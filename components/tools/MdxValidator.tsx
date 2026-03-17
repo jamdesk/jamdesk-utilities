@@ -1,123 +1,83 @@
 'use client'
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { InputPanel } from '@/components/editor/InputPanel'
 import { EditorToolbar } from '@/components/editor/EditorToolbar'
-import { MobileTabToggle } from '@/components/editor/MobileTabToggle'
-import { EngineErrorBoundary } from '@/components/editor/EngineErrorBoundary'
+import { ToolLayout } from '@/components/tools/ToolLayout'
+import { useToolInput } from '@/lib/use-tool-input'
+import { useLazyModule } from '@/lib/use-lazy-module'
+import { copyToClipboard } from '@/lib/clipboard'
+import { downloadAsFile } from '@/lib/download'
 import { trackEvent } from '@/lib/analytics'
 import { validatorSample } from '@/lib/samples'
-import { getContentFromHash, setContentHash } from '@/lib/share'
 import type { ValidationError, ValidationResult } from '@/lib/mdx-engine'
 
-type EngineModule = typeof import('@/lib/mdx-engine')
+const importEngine = () => import('@/lib/mdx-engine')
 
 export function MdxValidator() {
-  const [input, setInput] = useState(() => getContentFromHash() ?? validatorSample)
+  const { input, handleInputChange, handleLoadSample } = useToolInput(validatorSample, 'MDX Validator')
   const [result, setResult] = useState<ValidationResult | null>(null)
-  const [activeTab, setActiveTab] = useState<'input' | 'output'>('input')
-  const engineRef = useRef<EngineModule | null>(null)
+  const getEngine = useLazyModule(importEngine)
 
-  const runValidation = useCallback(async (text: string) => {
-    if (!text.trim()) {
+  useEffect(() => {
+    let cancelled = false
+    if (!input.trim()) {
       setResult({ valid: true, errors: [] })
       return
     }
+    getEngine().then((engine) =>
+      engine.validateMdx(input)
+    ).then((validationResult) => {
+      if (!cancelled) setResult(validationResult)
+    })
+    return () => { cancelled = true }
+  }, [input, getEngine])
 
-    if (!engineRef.current) {
-      engineRef.current = await import('@/lib/mdx-engine')
-    }
-
-    const validationResult = await engineRef.current.validateMdx(text)
-    setResult(validationResult)
-  }, [])
-
-  // Run validation on mount and whenever input changes
-  useEffect(() => {
-    runValidation(input)
-  }, [input, runValidation])
-
-  const handleInputChange = useCallback((value: string) => {
-    setInput(value)
-    setContentHash(value)
-  }, [])
-
-  const handleLoadSample = useCallback(() => {
-    setInput(validatorSample)
-    setContentHash(validatorSample)
-    trackEvent('Load Sample', { tool: 'MDX Validator' })
-  }, [])
+  const formatErrors = useCallback(() => {
+    if (!result || result.errors.length === 0) return ''
+    return result.errors
+      .map((e) => `${e.line}:${e.column} [${e.severity}] ${e.message}`)
+      .join('\n')
+  }, [result])
 
   const handleCopyErrors = useCallback(async () => {
-    if (!result || result.errors.length === 0) return
-
-    const text = result.errors
-      .map((e) => `${e.line}:${e.column} [${e.severity}] ${e.message}`)
-      .join('\n')
-
-    try {
-      await navigator.clipboard.writeText(text)
-      trackEvent('Copy', { tool: 'MDX Validator' })
-    } catch {
-      // Clipboard API not available
-    }
-  }, [result])
+    const text = formatErrors()
+    if (!text) return
+    await copyToClipboard(text)
+    trackEvent('Copy', { tool: 'MDX Validator' })
+  }, [formatErrors])
 
   const handleDownloadErrors = useCallback(() => {
-    if (!result || result.errors.length === 0) return
-
-    const text = result.errors
-      .map((e) => `${e.line}:${e.column} [${e.severity}] ${e.message}`)
-      .join('\n')
-
-    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'validation-errors.txt'
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    const text = formatErrors()
+    if (!text) return
+    downloadAsFile(text, 'validation-errors.txt')
     trackEvent('Download', { tool: 'MDX Validator' })
-  }, [result])
+  }, [formatErrors])
 
   const status = result
     ? { valid: result.valid, errorCount: result.errors.length }
     : undefined
 
   return (
-    <EngineErrorBoundary toolName="MDX Validator">
-      <EditorToolbar status={status} />
-      <MobileTabToggle activeTab={activeTab} onTabChange={setActiveTab} />
-      <div className="grid min-h-[400px] flex-1 grid-cols-1 sm:grid-cols-2">
-        <div
-          id="input-panel"
-          role="tabpanel"
-          aria-labelledby="input-tab"
-          className={`border-r border-border ${activeTab === 'output' ? 'hidden sm:flex' : 'flex'} flex-col`}
-        >
-          <InputPanel
-            value={input}
-            onChange={handleInputChange}
-            onLoadSample={handleLoadSample}
-            ariaLabel="MDX input editor"
-          />
-        </div>
-        <div
-          id="output-panel"
-          role="tabpanel"
-          aria-labelledby="output-tab"
-          className={`${activeTab === 'input' ? 'hidden sm:flex' : 'flex'} flex-col`}
-        >
-          <ValidationOutput
-            result={result}
-            onCopy={handleCopyErrors}
-            onDownload={handleDownloadErrors}
-          />
-        </div>
-      </div>
-    </EngineErrorBoundary>
+    <ToolLayout
+      toolName="MDX Validator"
+      toolbar={<EditorToolbar status={status} />}
+      inputPanel={
+        <InputPanel
+          value={input}
+          onChange={handleInputChange}
+          onLoadSample={handleLoadSample}
+          ariaLabel="MDX input editor"
+        />
+      }
+      outputPanel={
+        <ValidationOutput
+          result={result}
+          onCopy={handleCopyErrors}
+          onDownload={handleDownloadErrors}
+        />
+      }
+    />
   )
 }
 

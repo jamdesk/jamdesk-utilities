@@ -13,11 +13,11 @@ export async function formatMdx(
   input: string,
   options?: { tabWidth?: number }
 ): Promise<FormatResult> {
-  if (typeof input === 'string' && !input.trim()) {
-    return { formatted: '', error: null }
-  }
-
   try {
+    if (!input.trim()) {
+      return { formatted: '', error: null }
+    }
+
     const formatted = await format(input, {
       parser: 'mdx',
       plugins: [
