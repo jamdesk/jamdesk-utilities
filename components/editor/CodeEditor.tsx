@@ -216,7 +216,7 @@ function CodeEditorInner({
   return (
     <div
       ref={containerRef}
-      className="h-full overflow-hidden rounded-md border border-border"
+      className="h-full overflow-hidden"
       aria-label={ariaLabel}
     />
   )
@@ -226,7 +226,7 @@ function CodeEditorInner({
 const CodeEditorDynamic = dynamic(() => Promise.resolve(CodeEditorInner), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full items-center justify-center rounded-md border border-border bg-surface">
+    <div className="flex h-full items-center justify-center bg-[#1a1725]">
       <span className="text-sm text-muted-foreground">Loading editor{'\u2026'}</span>
     </div>
   ),
