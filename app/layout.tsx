@@ -34,7 +34,7 @@ export default async function RootLayout({
           defer
           data-domain="jamdesk.com"
           src="https://plausible.io/js/script.js"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
       </head>
       <body className="flex min-h-screen flex-col bg-[#faf8f5] text-[#1b3139] antialiased">

@@ -53,7 +53,7 @@
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
-  --color-accent-purple: var(--accent-purple);
+  --color-accent-red: var(--accent);
   --color-accent-light: var(--accent-light);
   --color-success: var(--success);
   --color-warning: var(--warning);
@@ -100,7 +100,7 @@
   --text-primary: #1b3139;
   --text-secondary: #5a6f77;
   --text-muted: #8fa8b3;
-  --accent-purple: #ff3621;
+  /* primary accent is --accent (#ff3621) defined above */
   --accent-light: #eb1600;
   --success: #16a34a;
   --warning: #f0a050;
