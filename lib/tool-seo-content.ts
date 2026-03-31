@@ -221,6 +221,45 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
       },
     ],
   },
+  'json-yaml-converter': {
+    howToTitle: 'How to Convert JSON to YAML (and YAML to JSON)',
+    howToContent:
+      'Paste JSON or YAML into the editor and toggle the direction to convert. JSON to YAML produces clean, readable YAML with 2-space indentation. YAML to JSON produces formatted JSON with proper nesting. Errors in the input are shown with descriptive messages. Copy or download the converted output.',
+    detailSections: [
+      {
+        heading: 'Bidirectional conversion',
+        content:
+          'The converter works in both directions. Toggle between JSON → YAML and YAML → JSON using the toolbar switch. The conversion preserves all data types: strings, numbers, booleans, null values, arrays, and nested objects. YAML-specific features like comments and anchors are not preserved when converting to JSON since JSON does not support them.',
+      },
+      {
+        heading: 'When to use JSON vs YAML',
+        content:
+          'JSON is the standard for APIs, package.json, and tsconfig.json. YAML is preferred for configuration files (Docker Compose, GitHub Actions, Kubernetes), CI/CD pipelines, and documentation frontmatter. Use this converter when moving configuration between systems or when you need to read a JSON config in a more human-friendly YAML format.',
+      },
+      {
+        heading: 'Error handling',
+        content:
+          'Invalid input produces a clear error message instead of silent failure. For JSON input, syntax errors like missing quotes, trailing commas, or unmatched brackets are caught. For YAML input, indentation errors, invalid nesting, and malformed values are flagged with line numbers where possible.',
+      },
+    ],
+    faq: [
+      {
+        question: 'Is the conversion lossless?',
+        answer:
+          'Data is preserved losslessly in both directions for standard types (strings, numbers, booleans, arrays, objects). YAML-only features like comments, anchors, and aliases are not preserved when converting to JSON because JSON has no equivalent syntax.',
+      },
+      {
+        question: 'Does it handle nested objects?',
+        answer:
+          'Yes. Deeply nested objects and arrays are converted correctly in both directions. YAML uses indentation for nesting while JSON uses braces and brackets.',
+      },
+      {
+        question: 'Can I convert YAML with comments?',
+        answer:
+          'YAML comments (lines starting with #) are parsed but not included in the JSON output since JSON does not support comments. The data values are converted correctly.',
+      },
+    ],
+  },
   'markdown-to-html': {
     howToTitle: 'How to Convert Markdown to HTML',
     howToContent:

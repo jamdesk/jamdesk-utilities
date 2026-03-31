@@ -216,6 +216,26 @@ features:
   - caching
 `
 
+export const jsonYamlSample = `{
+  "name": "my-project",
+  "version": "2.1.0",
+  "description": "A sample project configuration",
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "next": "^16.0.0"
+  },
+  "config": {
+    "port": 3000,
+    "debug": false,
+    "features": ["auth", "analytics", "dark-mode"]
+  }
+}`
+
 /** MDX with imports, JSX wrappers, self-closing components, regular markdown */
 export const mdxToMarkdownSample = `---
 title: Migration Guide

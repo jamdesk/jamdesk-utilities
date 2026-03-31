@@ -8,8 +8,8 @@ afterEach(() => {
 })
 
 describe('hub page', () => {
-  it('has 6 tools in registry', () => {
-    expect(tools).toHaveLength(6)
+  it('has 7 tools in registry', () => {
+    expect(tools).toHaveLength(7)
   })
 
   it('all tools have valid links', () => {
@@ -40,7 +40,7 @@ describe('hub page', () => {
     const toolLinks = links.filter((link) =>
       tools.some((t) => link.getAttribute('href') === `/${t.slug}`)
     )
-    expect(toolLinks).toHaveLength(6)
+    expect(toolLinks).toHaveLength(7)
   })
 
   it('renders the hero heading', () => {
@@ -64,7 +64,7 @@ describe('hub page', () => {
     expect(script).not.toBeNull()
     const json = JSON.parse(script!.textContent!)
     expect(json['@type']).toBe('CollectionPage')
-    expect(json.hasPart).toHaveLength(6)
+    expect(json.hasPart).toHaveLength(7)
   })
 
   it('renders SEO content sections', () => {

@@ -28,6 +28,13 @@ const YamlValidator = dynamic(
     import('@/components/tools/YamlValidator').then((m) => m.YamlValidator),
   { ssr: false }
 )
+const JsonYamlConverter = dynamic(
+  () =>
+    import('@/components/tools/JsonYamlConverter').then(
+      (m) => m.JsonYamlConverter
+    ),
+  { ssr: false }
+)
 
 interface ToolEditorProps {
   slug: string
@@ -42,6 +49,7 @@ export function ToolEditor({ slug }: ToolEditorProps) {
       {slug === 'mdx-to-markdown' && <MdxToMarkdown />}
       {slug === 'markdown-to-html' && <MdToHtml />}
       {slug === 'yaml-validator' && <YamlValidator />}
+      {slug === 'json-yaml-converter' && <JsonYamlConverter />}
     </div>
   )
 }

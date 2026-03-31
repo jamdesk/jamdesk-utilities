@@ -7,6 +7,7 @@ import {
   mdxToMarkdownSample,
   mdToHtmlSample,
   yamlValidatorSample,
+  jsonYamlSample,
 } from '../lib/samples'
 
 const sampleMap: Record<string, string> = {
@@ -16,6 +17,7 @@ const sampleMap: Record<string, string> = {
   'mdx-to-markdown': mdxToMarkdownSample,
   'markdown-to-html': mdToHtmlSample,
   'yaml-validator': yamlValidatorSample,
+  'json-yaml-converter': jsonYamlSample,
 }
 
 describe('sample content', () => {

@@ -80,6 +80,18 @@ export const tools: Tool[] = [
     ctaDescription:
       'Jamdesk validates frontmatter automatically when you deploy documentation.',
   },
+  {
+    slug: 'json-yaml-converter',
+    name: 'JSON ↔ YAML',
+    description: 'Convert between JSON and YAML',
+    icon: '⇄',
+    seoTitle: 'JSON to YAML / YAML to JSON Converter — Free Online | Jamdesk',
+    seoDescription:
+      'Convert JSON to YAML and YAML to JSON online. Bidirectional conversion with error detection. Free, open source, client-side.',
+    ctaText: 'Config files power your docs',
+    ctaDescription:
+      'Jamdesk handles JSON and YAML configuration natively.',
+  },
 ]
 
 export function getToolBySlug(slug: string): Tool | undefined {
