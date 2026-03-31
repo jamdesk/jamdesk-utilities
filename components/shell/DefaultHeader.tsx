@@ -92,6 +92,31 @@ export function DefaultHeader() {
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-1 sm:flex">
+          <button
+            type="button"
+            onClick={() => document.dispatchEvent(new CustomEvent('open-command-palette'))}
+            className="mr-1 flex items-center gap-2 rounded-lg border border-border bg-secondary/50 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-border hover:bg-secondary hover:text-foreground"
+            aria-label="Search tools"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+            <span className="hidden lg:inline">Search tools...</span>
+            <kbd className="hidden rounded border border-border bg-card px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground lg:inline-block">
+              ⌘K
+            </kbd>
+          </button>
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}

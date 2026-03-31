@@ -21,6 +21,14 @@ export function CommandPalette() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [])
 
+  useEffect(() => {
+    function handleOpen() {
+      setOpen(true)
+    }
+    document.addEventListener('open-command-palette', handleOpen)
+    return () => document.removeEventListener('open-command-palette', handleOpen)
+  }, [])
+
   const handleSelect = useCallback(
     (slug: string) => {
       setOpen(false)
