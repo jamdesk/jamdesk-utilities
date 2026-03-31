@@ -260,6 +260,45 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
       },
     ],
   },
+  'markdown-table-generator': {
+    howToTitle: 'How to Generate Markdown Tables',
+    howToContent:
+      'Paste CSV or TSV data into the editor and the generator produces a formatted Markdown table instantly. The first row becomes the table header. Toggle between CSV and TSV input formats using the toolbar. Copy the output or download it as a .md file. You can also paste data directly from spreadsheets — most spreadsheet applications copy as TSV.',
+    detailSections: [
+      {
+        heading: 'CSV and TSV support',
+        content:
+          'The generator accepts both CSV (comma-separated) and TSV (tab-separated) input. CSV handles quoted fields correctly — commas inside double quotes are preserved as cell content, not treated as delimiters. TSV mode splits on tab characters, which is the default format when copying from Excel, Google Sheets, or Numbers.',
+      },
+      {
+        heading: 'Pipe character escaping',
+        content:
+          'Pipe characters (|) in cell content are automatically escaped with a backslash (\\|) to prevent them from breaking the Markdown table syntax. This means you can safely include pipe characters in your data without manual escaping.',
+      },
+      {
+        heading: 'Spreadsheet to Markdown workflow',
+        content:
+          'Copy cells from any spreadsheet application (Excel, Google Sheets, Numbers, LibreOffice Calc), switch to TSV mode, and paste directly into the editor. The tab-separated values are converted to a clean Markdown table. This is faster than manually typing pipe characters and alignment dashes for every row.',
+      },
+    ],
+    faq: [
+      {
+        question: 'Can I paste from Excel or Google Sheets?',
+        answer:
+          'Yes. Copy cells from your spreadsheet, switch to TSV mode in the toolbar, and paste. Spreadsheets copy data as tab-separated values by default, which the TSV parser handles correctly.',
+      },
+      {
+        question: 'How are special characters handled?',
+        answer:
+          'Pipe characters (|) are escaped automatically. Commas inside quoted CSV fields are preserved as content. Other characters like asterisks, brackets, and backticks pass through unchanged.',
+      },
+      {
+        question: 'Does it support column alignment?',
+        answer:
+          'The generator produces standard left-aligned tables with --- separators. For center or right alignment, add colons to the separator row manually after generating: :--- for left, :---: for center, ---: for right.',
+      },
+    ],
+  },
   'markdown-to-html': {
     howToTitle: 'How to Convert Markdown to HTML',
     howToContent:

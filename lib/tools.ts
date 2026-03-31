@@ -92,6 +92,18 @@ export const tools: Tool[] = [
     ctaDescription:
       'Jamdesk handles JSON and YAML configuration natively.',
   },
+  {
+    slug: 'markdown-table-generator',
+    name: 'Markdown Table Generator',
+    description: 'Convert CSV or TSV to Markdown tables',
+    icon: '📊',
+    seoTitle: 'Markdown Table Generator — Free Online CSV to Table | Jamdesk',
+    seoDescription:
+      'Generate Markdown tables from CSV or TSV data. Paste spreadsheet data, get a formatted Markdown table. Free, open source, client-side.',
+    ctaText: 'Tables look great in Jamdesk docs',
+    ctaDescription:
+      'Jamdesk renders Markdown tables with responsive styling and dark mode support.',
+  },
 ]
 
 export function getToolBySlug(slug: string): Tool | undefined {

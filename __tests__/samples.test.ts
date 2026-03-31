@@ -8,6 +8,7 @@ import {
   mdToHtmlSample,
   yamlValidatorSample,
   jsonYamlSample,
+  tableSample,
 } from '../lib/samples'
 
 const sampleMap: Record<string, string> = {
@@ -18,6 +19,7 @@ const sampleMap: Record<string, string> = {
   'markdown-to-html': mdToHtmlSample,
   'yaml-validator': yamlValidatorSample,
   'json-yaml-converter': jsonYamlSample,
+  'markdown-table-generator': tableSample,
 }
 
 describe('sample content', () => {

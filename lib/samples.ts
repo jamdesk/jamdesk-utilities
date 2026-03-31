@@ -236,6 +236,13 @@ export const jsonYamlSample = `{
   }
 }`
 
+export const tableSample = `Name,Role,Department,Location
+Alice Chen,Engineering Lead,Platform,San Francisco
+Bob Martinez,Product Manager,Growth,New York
+Carol Davis,Designer,Design Systems,Remote
+David Kim,Backend Engineer,Platform,Seattle
+Eve Johnson,Frontend Engineer,Growth,Austin`
+
 /** MDX with imports, JSX wrappers, self-closing components, regular markdown */
 export const mdxToMarkdownSample = `---
 title: Migration Guide

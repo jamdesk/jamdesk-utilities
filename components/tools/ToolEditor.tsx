@@ -35,6 +35,10 @@ const JsonYamlConverter = dynamic(
     ),
   { ssr: false }
 )
+const TableGenerator = dynamic(
+  () => import('@/components/tools/TableGenerator').then((m) => m.TableGenerator),
+  { ssr: false }
+)
 
 interface ToolEditorProps {
   slug: string
@@ -50,6 +54,7 @@ export function ToolEditor({ slug }: ToolEditorProps) {
       {slug === 'markdown-to-html' && <MdToHtml />}
       {slug === 'yaml-validator' && <YamlValidator />}
       {slug === 'json-yaml-converter' && <JsonYamlConverter />}
+      {slug === 'markdown-table-generator' && <TableGenerator />}
     </div>
   )
 }
