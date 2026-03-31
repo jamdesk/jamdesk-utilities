@@ -188,6 +188,34 @@ const instance = create({ debug: true })
 For more details, visit [the documentation](https://docs.example.com).
 `
 
+export const yamlValidatorSample = `# Server configuration
+server:
+  host: localhost
+  port: 8080
+  ssl: true
+
+database:
+  host: db.example.com
+  port: 5432
+  name: myapp_production
+  credentials:
+    username: admin
+    password: secret123
+
+logging:
+  level: info
+  format: json
+  outputs:
+    - type: file
+      path: /var/log/app.log
+    - type: stdout
+
+features:
+  - authentication
+  - rate-limiting
+  - caching
+`
+
 /** MDX with imports, JSX wrappers, self-closing components, regular markdown */
 export const mdxToMarkdownSample = `---
 title: Migration Guide

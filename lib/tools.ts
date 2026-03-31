@@ -68,6 +68,18 @@ export const tools: Tool[] = [
     ctaDescription:
       'Jamdesk turns your Markdown and MDX into beautiful docs sites automatically.',
   },
+  {
+    slug: 'yaml-validator',
+    name: 'YAML Validator',
+    description: 'Validate YAML syntax and find errors',
+    icon: '📋',
+    seoTitle: 'YAML Validator — Free Online YAML Syntax Checker | Jamdesk',
+    seoDescription:
+      'Validate YAML online. Catch syntax errors, duplicate keys, and indentation issues. Shows parsed output as JSON. Free, open source, client-side.',
+    ctaText: 'YAML frontmatter powers your docs',
+    ctaDescription:
+      'Jamdesk validates frontmatter automatically when you deploy documentation.',
+  },
 ]
 
 export function getToolBySlug(slug: string): Tool | undefined {

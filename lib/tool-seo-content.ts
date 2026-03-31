@@ -182,6 +182,45 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
       },
     ],
   },
+  'yaml-validator': {
+    howToTitle: 'How to Validate YAML',
+    howToContent:
+      'Paste your YAML content into the editor and validation runs instantly. The validator checks syntax, catches duplicate keys at any nesting level, and flags tabs used for indentation. Valid YAML is parsed and displayed as formatted JSON in the output panel. Errors include line numbers, column positions, and descriptive messages.',
+    detailSections: [
+      {
+        heading: 'What the validator checks',
+        content:
+          'The YAML Validator checks for syntax errors (malformed key-value pairs, incorrect indentation), duplicate keys at any nesting level (using the yaml package with uniqueKeys mode), and tabs in indentation (YAML requires spaces, not tabs). Valid input is parsed and displayed as formatted JSON so you can verify the parsed structure matches your intent.',
+      },
+      {
+        heading: 'Duplicate key detection',
+        content:
+          'Duplicate keys in YAML silently overwrite earlier values, which causes hard-to-find bugs in configuration files. This validator uses strict mode to flag duplicate keys as errors instead of silently merging them. Keys with the same name under different parent objects are allowed — only true duplicates at the same level are flagged.',
+      },
+      {
+        heading: 'Common YAML mistakes',
+        content:
+          'The most common YAML errors are: tabs instead of spaces for indentation, missing colons after keys, incorrect nesting depth, unquoted strings that look like booleans (yes/no become true/false), and duplicate keys that silently overwrite values. This validator catches all of these with clear error messages.',
+      },
+    ],
+    faq: [
+      {
+        question: 'Does it catch duplicate keys?',
+        answer:
+          'Yes. The validator uses strict mode with duplicate key detection. If the same key appears twice at the same nesting level, it is flagged as an error with the exact line number.',
+      },
+      {
+        question: 'What is the difference between YAML and JSON?',
+        answer:
+          'YAML uses indentation for structure while JSON uses braces and brackets. YAML supports comments, multi-line strings, and anchors. JSON is stricter but more widely supported by APIs. Both represent the same data structures — you can convert between them losslessly.',
+      },
+      {
+        question: 'Why does YAML not allow tabs?',
+        answer:
+          'The YAML specification requires spaces for indentation because tab width varies between editors. A file that looks correct in one editor may have wrong indentation in another. Spaces ensure consistent parsing regardless of editor settings.',
+      },
+    ],
+  },
   'markdown-to-html': {
     howToTitle: 'How to Convert Markdown to HTML',
     howToContent:

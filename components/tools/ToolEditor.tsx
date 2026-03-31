@@ -23,6 +23,11 @@ const MdToHtml = dynamic(
   () => import('@/components/tools/MdToHtml').then((m) => m.MdToHtml),
   { ssr: false }
 )
+const YamlValidator = dynamic(
+  () =>
+    import('@/components/tools/YamlValidator').then((m) => m.YamlValidator),
+  { ssr: false }
+)
 
 interface ToolEditorProps {
   slug: string
@@ -36,6 +41,7 @@ export function ToolEditor({ slug }: ToolEditorProps) {
       {slug === 'mdx-viewer' && <MdxViewer />}
       {slug === 'mdx-to-markdown' && <MdxToMarkdown />}
       {slug === 'markdown-to-html' && <MdToHtml />}
+      {slug === 'yaml-validator' && <YamlValidator />}
     </div>
   )
 }

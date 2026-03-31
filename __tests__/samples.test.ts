@@ -6,6 +6,7 @@ import {
   viewerSample,
   mdxToMarkdownSample,
   mdToHtmlSample,
+  yamlValidatorSample,
 } from '../lib/samples'
 
 const sampleMap: Record<string, string> = {
@@ -14,6 +15,7 @@ const sampleMap: Record<string, string> = {
   'mdx-viewer': viewerSample,
   'mdx-to-markdown': mdxToMarkdownSample,
   'markdown-to-html': mdToHtmlSample,
+  'yaml-validator': yamlValidatorSample,
 }
 
 describe('sample content', () => {
