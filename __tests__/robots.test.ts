@@ -14,7 +14,7 @@ describe('robots.txt', () => {
     const result = robots()
     const rules = Array.isArray(result.rules) ? result.rules : [result.rules]
     const allRule = rules.find(
-      (r: { userAgent: string }) => r.userAgent === '*'
+      (r) => r.userAgent === '*'
     )
     expect(allRule).toBeDefined()
     expect(allRule!.allow).toBe('/')
