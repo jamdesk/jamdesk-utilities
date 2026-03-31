@@ -182,4 +182,43 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
       },
     ],
   },
+  'markdown-to-html': {
+    howToTitle: 'How to Convert Markdown to HTML',
+    howToContent:
+      'Paste your Markdown content into the editor and the converter generates clean, semantic HTML in real time. The output uses standard HTML5 elements — headings become <h1> through <h6>, lists use <ul>/<ol>/<li>, code blocks use <pre><code>, and emphasis maps to <strong> and <em>. Copy the output or download it as an .html file.',
+    detailSections: [
+      {
+        heading: 'What gets converted',
+        content:
+          'All standard Markdown syntax is converted: headings, paragraphs, bold, italic, inline code, code blocks (with language class attributes), links, images, blockquotes, horizontal rules, and both ordered and unordered lists. Tables are converted to <table> with <thead> and <tbody>. YAML frontmatter is either rendered as a preformatted block or stripped entirely.',
+      },
+      {
+        heading: 'HTML output quality',
+        content:
+          'The converter produces clean, semantic HTML without inline styles or framework-specific classes. The output is suitable for embedding in CMSs, email templates, static sites, or any context that accepts raw HTML. The remark-rehype pipeline ensures spec-compliant output.',
+      },
+      {
+        heading: 'Common use cases',
+        content:
+          'Use this converter when migrating Markdown content to a CMS that requires HTML, preparing documentation for email distribution, creating embeddable content snippets, or generating HTML previews for non-technical reviewers. It is also useful for developers building Markdown-to-HTML pipelines who want to preview the output before integrating it into their toolchain.',
+      },
+    ],
+    faq: [
+      {
+        question: 'Does it support GitHub Flavored Markdown?',
+        answer:
+          'The converter handles standard Markdown syntax including headings, lists, code blocks, links, images, bold, italic, and blockquotes. GitHub-specific extensions like task lists and autolinked URLs are not currently supported.',
+      },
+      {
+        question: 'Can I use the HTML output in an email?',
+        answer:
+          'The output is clean semantic HTML without CSS or JavaScript dependencies. Most email clients render semantic HTML correctly, though you may need to add inline styles for consistent email rendering across clients.',
+      },
+      {
+        question: 'Does it handle code syntax highlighting?',
+        answer:
+          'Code blocks include language class attributes (e.g., class="language-js") so you can apply syntax highlighting with any client-side library like Prism.js or highlight.js. The converter does not add highlighting styles directly.',
+      },
+    ],
+  },
 }

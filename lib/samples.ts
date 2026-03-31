@@ -150,6 +150,44 @@ Create a new user:
 > **Note:** Rate limiting applies. See [rate limits](/docs/rate-limits) for details.
 `
 
+export const mdToHtmlSample = `---
+title: Getting Started
+description: Quick start guide
+---
+
+# Getting Started
+
+Welcome to the **quick start guide**. Follow these steps to get up and running.
+
+## Installation
+
+Install the package from npm:
+
+\`\`\`bash
+npm install my-package
+\`\`\`
+
+## Usage
+
+Import and use in your project:
+
+\`\`\`js
+import { create } from 'my-package'
+
+const instance = create({ debug: true })
+\`\`\`
+
+## Features
+
+- **Fast** — Built for speed
+- **Type-safe** — Full TypeScript support
+- **Lightweight** — Zero dependencies
+
+> **Note:** Check the [API reference](/docs/api) for advanced configuration.
+
+For more details, visit [the documentation](https://docs.example.com).
+`
+
 /** MDX with imports, JSX wrappers, self-closing components, regular markdown */
 export const mdxToMarkdownSample = `---
 title: Migration Guide

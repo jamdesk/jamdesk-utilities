@@ -56,6 +56,18 @@ export const tools: Tool[] = [
     ctaText: 'Jamdesk supports MDX natively',
     ctaDescription: 'No conversion needed — Jamdesk renders MDX as-is.',
   },
+  {
+    slug: 'markdown-to-html',
+    name: 'Markdown to HTML',
+    description: 'Convert Markdown to clean HTML',
+    icon: '🔄',
+    seoTitle: 'Markdown to HTML Converter — Free Online Tool | Jamdesk',
+    seoDescription:
+      'Convert Markdown to clean HTML online. Handles headings, lists, code blocks, links, and images. Free, open source, client-side.',
+    ctaText: 'Publish Markdown as live documentation',
+    ctaDescription:
+      'Jamdesk turns your Markdown and MDX into beautiful docs sites automatically.',
+  },
 ]
 
 export function getToolBySlug(slug: string): Tool | undefined {

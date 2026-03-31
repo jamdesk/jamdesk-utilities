@@ -19,6 +19,10 @@ const MdxToMarkdown = dynamic(
     import('@/components/tools/MdxToMarkdown').then((m) => m.MdxToMarkdown),
   { ssr: false }
 )
+const MdToHtml = dynamic(
+  () => import('@/components/tools/MdToHtml').then((m) => m.MdToHtml),
+  { ssr: false }
+)
 
 interface ToolEditorProps {
   slug: string
@@ -31,6 +35,7 @@ export function ToolEditor({ slug }: ToolEditorProps) {
       {slug === 'mdx-validator' && <MdxValidator />}
       {slug === 'mdx-viewer' && <MdxViewer />}
       {slug === 'mdx-to-markdown' && <MdxToMarkdown />}
+      {slug === 'markdown-to-html' && <MdToHtml />}
     </div>
   )
 }

@@ -35,17 +35,18 @@ describe('tool page data', () => {
 
   it('generateStaticParams would return all tool slugs', () => {
     const params = tools.map((tool) => ({ tool: tool.slug }))
-    expect(params).toHaveLength(4)
+    expect(params).toHaveLength(5)
     expect(params.map((p) => p.tool)).toContain('mdx-formatter')
     expect(params.map((p) => p.tool)).toContain('mdx-validator')
     expect(params.map((p) => p.tool)).toContain('mdx-viewer')
     expect(params.map((p) => p.tool)).toContain('mdx-to-markdown')
+    expect(params.map((p) => p.tool)).toContain('markdown-to-html')
   })
 
-  it('each tool has 3 related tools', () => {
+  it('each tool has 4 related tools', () => {
     for (const tool of tools) {
       const related = tools.filter((t) => t.slug !== tool.slug)
-      expect(related).toHaveLength(3)
+      expect(related).toHaveLength(4)
     }
   })
 })
