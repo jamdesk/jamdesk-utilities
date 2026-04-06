@@ -7,7 +7,7 @@ import { FaqSection } from '@/components/seo/FaqSection'
 export const metadata: Metadata = {
   title: {
     absolute:
-      'MDX & Developer Utilities — Free, Open Source Documentation Tools | Jamdesk',
+      'Free MDX & Developer Utilities | Jamdesk',
   },
   description:
     'Free, open-source developer tools for MDX, Markdown, YAML, and JSON. Format, validate, convert, and preview — all client-side, no data leaves your browser.',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     canonical: 'https://www.jamdesk.com/utilities',
   },
   openGraph: {
-    title: 'MDX & Developer Utilities — Free, Open Source Documentation Tools | Jamdesk',
+    title: 'Free MDX & Developer Utilities | Jamdesk',
     description:
       'Free, open-source developer tools for MDX, Markdown, YAML, and JSON. Format, validate, convert, and preview — all client-side.',
     url: 'https://www.jamdesk.com/utilities',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MDX & Developer Utilities — Free, Open Source Documentation Tools | Jamdesk',
+    title: 'Free MDX & Developer Utilities | Jamdesk',
     description:
       'Free, open-source developer tools for MDX, Markdown, YAML, and JSON. Format, validate, convert, and preview — all client-side.',
     images: ['https://www.jamdesk.com/utilities/og/hub.png'],
@@ -121,7 +121,7 @@ export default function Home() {
           simplicity of Markdown with the flexibility of components.
           {' '}
           <a
-            href="https://jamdesk.com/docs/content/mdx-components"
+            href="https://jamdesk.com/docs/content/react-components"
             className="text-primary hover:underline"
             target="_blank"
             rel="noopener noreferrer"
@@ -150,7 +150,7 @@ export default function Home() {
           significantly.
           {' '}
           <a
-            href="https://jamdesk.com/docs/getting-started"
+            href="https://jamdesk.com/docs/quickstart"
             className="text-primary hover:underline"
             target="_blank"
             rel="noopener noreferrer"
