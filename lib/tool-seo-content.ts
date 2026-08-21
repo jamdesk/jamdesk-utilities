@@ -16,88 +16,98 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
   'mdx-formatter': {
     howToTitle: 'How to Format MDX',
     howToContent:
-      'Paste your MDX into the editor and the formatter will apply consistent indentation, normalize frontmatter spacing, and clean up JSX component formatting. The formatter preserves your content while fixing whitespace issues, aligning attributes, and ensuring consistent line breaks between sections. It handles mixed Markdown and JSX syntax correctly, so component props stay readable alongside your prose. The output is ready to commit — no manual cleanup needed.',
+      'Paste MDX into the editor and the formatted version appears beside it as you type. Indentation gets normalized, frontmatter spacing is tidied up, and JSX attributes line up the way Prettier would align them in your own repo. Your writing itself is untouched. Only whitespace moves, so prose, component props, and frontmatter values come out exactly as you wrote them. Markdown and JSX mixed in the same file are handled in one pass, and the result is ready to paste into a commit.',
     detailSections: [
       {
         heading: 'What the formatter does',
         content:
-          'The MDX Formatter uses Prettier 3.x with the built-in MDX parser to format your files. It handles mixed Markdown prose and JSX component syntax in a single pass. Frontmatter (YAML between --- delimiters) is preserved and optionally sorted alphabetically. Import and export statements are normalized to use consistent quote style and spacing. The formatter processes files up to 50KB entirely in your browser — nothing is sent to a server.',
+          'Prettier 3.x does the work through its official MDX parser, with one pre-pass in front of it. Prettier deliberately leaves Markdown indentation alone, because four leading spaces mean a code block, so stray indentation on headings and paragraphs would otherwise survive untouched. The pre-pass strips that first, then hands the file over. Frontmatter between --- delimiters stays put, and its keys can be sorted alphabetically. Imports and exports come back with consistent quotes and spacing. All of it runs in your browser: the file you paste never reaches a server.',
       },
       {
         heading: 'Formatting options',
         content:
-          'Tab width toggles between 2-space and 4-space indentation. Sort frontmatter alphabetically orders your YAML keys for consistency across files. Trim trailing whitespace removes invisible spaces at the end of lines. Collapse blank lines reduces 3 or more consecutive blank lines to 2. Print width switches between 80 and 120 character line wrapping.',
+          'Five toggles sit above the editor. Tab width switches between 2-space and 4-space indentation; print width sets the wrap point at 80 or 120 characters. Sorting frontmatter alphabetically is the one worth turning on for a shared repo, since it stops key order drifting between contributors. The last two clean up invisible mess: trailing spaces at the ends of lines, and runs of three or more blank lines collapsed back to two. Every toggle re-formats immediately, so you can see what each one does before you commit to it.',
       },
       {
         heading: 'When to use an MDX formatter',
         content:
-          'Use the formatter before committing MDX files to version control, after copy-pasting content from external sources, or when onboarding a team to consistent formatting standards. It is especially useful for documentation repositories with multiple contributors where inconsistent whitespace creates noisy diffs. The formatter pairs well with the MDX Validator — format first, then validate.',
+          'Before a commit, mostly. Inconsistent whitespace turns a one-line content edit into a twelve-line diff, and that noise is what makes documentation pull requests tedious to review. The other common moment is right after pasting content in from Notion, Google Docs, or an old wiki, where indentation rarely survives the trip. Format first, then run the result through the MDX Validator.',
       },
     ],
     faq: [
       {
         question: 'Does the formatter change my content?',
         answer:
-          'No. The formatter only adjusts whitespace, indentation, and formatting. Your actual content, component props, and frontmatter values are preserved exactly as written.',
+          'No. Only whitespace, indentation, and line wrapping change. Your text, your component props, and your frontmatter values come out exactly as you wrote them.',
       },
       {
         question: 'Does it handle frontmatter?',
         answer:
-          'Yes. The formatter correctly handles YAML frontmatter blocks, preserving their structure while normalizing spacing and indentation within the frontmatter section.',
+          'Yes. YAML frontmatter is preserved, with spacing and indentation normalized inside the block. An optional toggle sorts the keys alphabetically.',
       },
       {
         question: 'What formatting rules does it follow?',
         answer:
-          'The formatter uses Prettier with MDX support. It applies standard Prettier rules for Markdown and JSX, including consistent indentation, line wrapping, and attribute alignment.',
+          "Prettier's, via the MDX parser. That means standard Prettier behavior for Markdown and JSX: consistent indentation, wrapping at the print width you pick, and aligned component attributes.",
       },
       {
         question: 'Can I configure the formatting options?',
         answer:
-          'Yes. The toolbar above the editor lets you toggle between 2-space and 4-space indentation, enable alphabetical frontmatter key sorting, trim trailing whitespace, collapse consecutive blank lines, and switch between 80 and 120 character print width. These options apply in real time as you edit.',
+          'Yes. The toolbar above the editor controls indentation (2 or 4 spaces), print width (80 or 120 characters), alphabetical frontmatter sorting, trailing whitespace trimming, and blank line collapsing. Changes apply as you type.',
       },
     ],
   },
   'mdx-validator': {
     howToTitle: 'How to Validate MDX',
     howToContent:
-      'Paste your MDX content into the editor and validation runs automatically. The validator checks for common issues: unclosed JSX tags, malformed frontmatter, unbalanced curly braces in expressions, and invalid Markdown syntax. Errors appear inline with line numbers and descriptions so you can find and fix problems quickly. The validator uses the same MDX compiler that documentation platforms use, so if your content passes validation here, it will compile correctly in your project.',
+      "Paste MDX into the editor and validation runs on its own, about a third of a second after you stop typing. Unclosed JSX tags, mismatched components, unbalanced curly braces, and import statements that won't parse all surface inline with a line number, a column, and a message describing what broke. The parser is remark-mdx, the same one your build uses, so a file that comes back clean here compiles in your project.",
     detailSections: [
       {
         heading: 'How validation works',
         content:
-          'The MDX Validator uses the remark-mdx parser (the same parser used by Next.js, Docusaurus, and other MDX build tools) to check your content. It runs a full parse pass and collects all warnings and errors from the unified pipeline. Each issue includes the exact line number, column position, severity level, and a descriptive message. Validation runs automatically as you type with a 300ms debounce to keep the editor responsive.',
+          'Your content goes through remark-mdx, the parser behind Next.js, Docusaurus, and Astro. It runs a full parse pass and collects every message the unified pipeline produces, each tagged with a line, a column, and a severity. Validation re-runs 300ms after your last keystroke, which keeps the editor responsive while you type into a large file.',
       },
       {
         heading: 'Common errors the validator catches',
         content:
-          'Unclosed JSX tags (e.g., <Callout> without </Callout>), malformed YAML frontmatter (missing closing --- or invalid syntax), unbalanced curly braces in MDX expressions, import statements with incorrect syntax, and components used before being imported. Strict mode filters results to errors only, hiding warnings for a cleaner output.',
+          'The usual culprit is a JSX tag nobody closed: a <Callout> with no </Callout>, or a </Note> closing something that was never opened. After that come unbalanced curly braces in expressions, and import statements that fail with an acorn parse error. Strict mode filters the list down to errors only and hides warnings.',
       },
       {
-        heading: 'Validating before deployment',
+        heading: "What it doesn't check",
         content:
-          'Catching MDX errors before deployment prevents broken documentation pages. Paste your content here to verify it compiles, then commit with confidence. For automated validation across an entire project, consider adding remark-mdx to your CI pipeline — this tool uses the same underlying parser.',
+          "Frontmatter is treated as an opaque block. remark-mdx marks where it starts and ends but never parses the YAML inside it, so a duplicate key or a tab used for indentation in your frontmatter passes here and still causes trouble at build time. Paste that block into the YAML Validator instead. Imports aren't resolved either, so <Callout> validates whether or not anything named Callout exists in your project.",
+      },
+      {
+        heading: 'Checking a whole project',
+        content:
+          "This page handles one file at a time. For a repository, add remark-mdx to CI and fail the build on parse errors. It's the same parser running here, so the results match.",
       },
     ],
     faq: [
       {
         question: 'What errors does the validator catch?',
         answer:
-          'The validator catches JSX syntax errors (unclosed tags, mismatched components), frontmatter issues (invalid YAML), expression errors (unbalanced braces), and Markdown problems (malformed links, broken references).',
+          'JSX syntax errors (unclosed tags, mismatched components), unbalanced braces in MDX expressions, and import or export statements that fail to parse. Markdown itself is forgiving, so genuine Markdown errors are rare.',
+      },
+      {
+        question: 'Does the validator check my frontmatter?',
+        answer:
+          "No. remark-mdx treats frontmatter as an opaque block and doesn't parse the YAML inside it, so invalid YAML passes validation here. Use the YAML Validator for that.",
       },
       {
         question: 'Does validation run automatically?',
         answer:
-          'Yes. Validation runs as you type with a short debounce delay. You do not need to click a button — errors and warnings appear inline as you edit.',
+          'Yes. It re-runs 300ms after you stop typing. No button to press, and errors appear inline as you edit.',
       },
       {
         question: 'Is this the same as my build-time validator?',
         answer:
-          'The validator uses the standard remark-mdx parser, which is the same parser used by most MDX build tools. If your content validates here, it should compile in your project.',
+          "It runs remark-mdx, which is what most MDX build tools parse with, so syntax that validates here parses in your project too. It won't catch failures that happen later in a build, such as a component that's imported but doesn't exist.",
       },
       {
         question: 'Can I validate multiple files at once?',
         answer:
-          'Currently the validator handles one MDX file at a time. Paste your content into the editor to validate it. Batch validation across a project is better handled by your build toolchain.',
+          'Not here. The editor takes one file at a time. Batch validation belongs in your build toolchain, where remark-mdx can run over every file on every commit.',
       },
     ],
   },
@@ -143,44 +153,44 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
   'mdx-to-markdown': {
     howToTitle: 'How to Convert MDX to Markdown',
     howToContent:
-      'Paste your MDX content into the editor and the converter strips JSX-specific syntax to produce clean Markdown. Import statements, export statements, and JSX component tags are removed. Content inside JSX components is preserved where possible, so your text is not lost. The output is standard Markdown that works in any Markdown renderer — GitHub, GitLab, VS Code preview, or static site generators that do not support MDX. Use this when migrating content away from MDX or when you need a plain Markdown version of your documentation.',
+      "Paste MDX into the editor and the Markdown version appears beside it. Imports, exports, JSX tags, and curly-brace expressions are stripped out, while the text inside your components is kept and folded into the surrounding prose. What comes back is plain Markdown that renders anywhere: GitHub, GitLab, a VS Code preview, a static site generator with no MDX support. Reach for it when you're moving content off an MDX platform, or when someone needs a copy of the docs without component markup in the way.",
     detailSections: [
       {
         heading: 'What gets converted',
         content:
-          'The converter removes all MDX-specific syntax: import statements, export statements, and JSX component tags. For wrapper components (like <Callout>text</Callout>), the inner content is preserved and unwrapped into the surrounding Markdown. Self-closing components (like <Image />) are removed entirely since they have no Markdown equivalent. Standard Markdown syntax — headings, lists, links, code blocks, images, tables — passes through unchanged.',
+          "Everything MDX-specific comes out. Import and export statements go first, then JSX tags and curly-brace expressions. A wrapper component with children, like <Callout>Watch out.</Callout>, is unwrapped and its text stays where it was. A self-closing one, like <Image />, has nothing to unwrap, so it's dropped. Ordinary Markdown passes through untouched: headings, lists, links, code blocks, images, emphasis.",
       },
       {
         heading: 'Frontmatter handling',
         content:
-          'YAML frontmatter is preserved by default since frontmatter is valid in both MDX and standard Markdown. Toggle the "Strip frontmatter" option to remove it entirely — useful when converting content for platforms that do not support frontmatter metadata.',
+          'Frontmatter is valid in plain Markdown too, so it\'s kept by default. Toggle "Strip frontmatter" when the destination has no use for it, which is usually the case if you\'re pasting into a wiki or an email.',
       },
       {
         heading: 'Migration use cases',
         content:
-          'Use this converter when migrating documentation from an MDX-based platform (Next.js, Docusaurus, Jamdesk) to a standard Markdown platform (GitHub wikis, GitLab pages, Confluence). It is also useful for generating plain-text versions of documentation for email newsletters or non-technical stakeholders who need content without component markup.',
+          'The common one is moving docs off an MDX platform (Next.js, Docusaurus, Jamdesk) onto something that only speaks Markdown, such as a GitHub wiki, GitLab pages, or Confluence. It is also the quickest way to get a readable plain-text copy of a page for a newsletter, or for a reviewer who should be reading the words, not the component markup wrapped around them.',
       },
     ],
     faq: [
       {
         question: 'What gets removed during conversion?',
         answer:
-          'Import statements, export statements, and JSX component tags are removed. Standard Markdown syntax (headings, lists, links, code blocks, images) is preserved. Content inside JSX components is kept where possible.',
+          'Imports, exports, JSX tags, and curly-brace expressions. Text inside a component is kept wherever that component has children. Standard Markdown (headings, lists, links, code blocks, images) is left alone.',
       },
       {
         question: 'Is the conversion lossless?',
         answer:
-          'No. JSX components that have no Markdown equivalent are removed, which means interactive elements, custom layouts, and component-specific styling are lost. The converter preserves all standard Markdown content.',
+          "No. A JSX component with no Markdown equivalent is removed, so interactive elements, custom layouts, and component styling don't survive the trip. Standard Markdown content does.",
       },
       {
         question: 'Does it handle frontmatter?',
         answer:
-          'Yes. YAML frontmatter is preserved in the Markdown output since frontmatter is valid in both MDX and standard Markdown.',
+          "Yes. YAML frontmatter is kept by default, since it's valid in plain Markdown as well as MDX. A toggle strips it if you'd rather it went.",
       },
       {
         question: 'Can I convert Markdown back to MDX?',
         answer:
-          'Standard Markdown is already valid MDX, so no conversion is needed. You can add JSX components and imports to any Markdown file to turn it into MDX.',
+          "There's nothing to convert: Markdown is already valid MDX. Add imports and JSX components to any .md file, rename it .mdx, and it works.",
       },
     ],
   },
@@ -236,39 +246,39 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
   'yaml-validator': {
     howToTitle: 'How to Validate YAML',
     howToContent:
-      'Paste your YAML content into the editor and validation runs instantly. The validator checks syntax, catches duplicate keys at any nesting level, and flags tabs used for indentation. Valid YAML is parsed and displayed as formatted JSON in the output panel. Errors include line numbers, column positions, and descriptive messages.',
+      "Paste YAML into the editor and it's checked as you type. Syntax errors, duplicate keys at any nesting level, and tabs used for indentation come back with a line number, a column, and a message. Anything that parses cleanly is shown as formatted JSON in the output panel, which is the fastest way to confirm that the structure you got is the structure you meant.",
     detailSections: [
       {
         heading: 'What the validator checks',
         content:
-          'The YAML Validator checks for syntax errors (malformed key-value pairs, incorrect indentation), duplicate keys at any nesting level (using the yaml package with uniqueKeys mode), and tabs in indentation (YAML requires spaces, not tabs). Valid input is parsed and displayed as formatted JSON so you can verify the parsed structure matches your intent.',
+          'Three things, in order. Tabs at the start of a line are caught first, because YAML requires spaces and a tab there fails every parser you hand the file to. Then the yaml package parses the document in strict mode with uniqueKeys enabled, which surfaces malformed key-value pairs, broken indentation, and duplicate keys. Whatever survives is serialized back out as JSON, so you can read the parsed structure instead of guessing at it.',
       },
       {
         heading: 'Duplicate key detection',
         content:
-          'Duplicate keys in YAML silently overwrite earlier values, which causes hard-to-find bugs in configuration files. This validator uses strict mode to flag duplicate keys as errors instead of silently merging them. Keys with the same name under different parent objects are allowed — only true duplicates at the same level are flagged.',
+          "Duplicate keys are the ones that hurt. YAML doesn't complain about them. The later value quietly wins, and the config you thought you shipped isn't the config running. Strict mode turns that into an error with a line number. Keys sharing a name under different parents are fine, as they should be, and only a real collision at the same level gets flagged.",
       },
       {
         heading: 'Common YAML mistakes',
         content:
-          'The most common YAML errors are: tabs instead of spaces for indentation, missing colons after keys, incorrect nesting depth, unquoted strings that look like booleans (yes/no become true/false), and duplicate keys that silently overwrite values. This validator catches all of these with clear error messages.',
+          'Tabs instead of spaces. A missing colon after a key. Nesting that sits one level off from what you meant, which parses fine and quietly means something else. Duplicate keys. And the subtle one: values that are not the type you assumed. Write version: 1.10 and the JSON panel shows 1.1, because YAML read it as a number. Write country: no and this parser keeps the string "no", but a YAML 1.1 parser on the other end will hand your application false. The error list catches the syntax problems; the JSON output is what catches the rest.',
       },
     ],
     faq: [
       {
         question: 'Does it catch duplicate keys?',
         answer:
-          'Yes. The validator uses strict mode with duplicate key detection. If the same key appears twice at the same nesting level, it is flagged as an error with the exact line number.',
+          'Yes, at any nesting level. The parser runs in strict mode with uniqueKeys enabled, so a key repeated at the same level is reported as an error with its line number instead of quietly overwriting the earlier value.',
       },
       {
         question: 'What is the difference between YAML and JSON?',
         answer:
-          'YAML uses indentation for structure while JSON uses braces and brackets. YAML supports comments, multi-line strings, and anchors. JSON is stricter but more widely supported by APIs. Both represent the same data structures — you can convert between them losslessly.',
+          'YAML uses indentation for structure, JSON uses braces and brackets. YAML adds comments, multi-line strings, and anchors, none of which JSON has, and JSON is accepted by far more tooling in return. The data model underneath is the same, which is why you can convert between them.',
       },
       {
         question: 'Why does YAML not allow tabs?',
         answer:
-          'The YAML specification requires spaces for indentation because tab width varies between editors. A file that looks correct in one editor may have wrong indentation in another. Spaces ensure consistent parsing regardless of editor settings.',
+          'Because tab width is an editor setting, not a fixed value. A file indented with tabs looks correctly nested in one editor and wrong in another, and the parser has no way to tell which one you meant. The spec sidesteps the problem by requiring spaces.',
       },
     ],
   },
@@ -353,39 +363,39 @@ export const toolSeoContent: Record<string, ToolSeoContent> = {
   'markdown-to-html': {
     howToTitle: 'How to Convert Markdown to HTML',
     howToContent:
-      'Paste your Markdown content into the editor and the converter generates clean, semantic HTML in real time. The output uses standard HTML5 elements — headings become <h1> through <h6>, lists use <ul>/<ol>/<li>, code blocks use <pre><code>, and emphasis maps to <strong> and <em>. Copy the output or download it as an .html file.',
+      'Paste Markdown into the editor and the HTML appears beside it as you type. Headings become <h1> through <h6>, lists become <ul>, <ol>, and <li>, fenced code becomes <pre><code>, and emphasis maps to <strong> and <em>. No wrapper divs, no classes, no inline styles. Copy the result out, or download it as an .html file.',
     detailSections: [
       {
         heading: 'What gets converted',
         content:
-          'All standard Markdown syntax is converted: headings, paragraphs, bold, italic, inline code, code blocks (with language class attributes), links, images, blockquotes, horizontal rules, and both ordered and unordered lists. Tables are converted to <table> with <thead> and <tbody>. YAML frontmatter is either rendered as a preformatted block or stripped entirely.',
+          'Core Markdown, as CommonMark defines it: headings, paragraphs, bold and italic, inline code, fenced code blocks with the language recorded as class="language-js" or similar, links, images, blockquotes, horizontal rules, and both kinds of list. YAML frontmatter is rendered as a pre block, or dropped entirely when you toggle it off. GitHub extensions aren\'t enabled, so pipe tables, task lists, and strikethrough come through as literal text.',
       },
       {
         heading: 'HTML output quality',
         content:
-          'The converter produces clean, semantic HTML without inline styles or framework-specific classes. The output is suitable for embedding in CMSs, email templates, static sites, or any context that accepts raw HTML. The remark-rehype pipeline ensures spec-compliant output.',
+          "The output is semantic HTML5 with nothing bolted on. No inline styles, no framework classes, no wrapper elements to strip out later. remark-rehype does the conversion, which is the same pipeline running behind most static site generators, so the result is safe to drop into a CMS field, an email template, or a page you're assembling by hand.",
       },
       {
         heading: 'Common use cases',
         content:
-          'Use this converter when migrating Markdown content to a CMS that requires HTML, preparing documentation for email distribution, creating embeddable content snippets, or generating HTML previews for non-technical reviewers. It is also useful for developers building Markdown-to-HTML pipelines who want to preview the output before integrating it into their toolchain.',
+          "Migrating Markdown into a CMS that only stores HTML is the usual reason people land here. It also works for prepping a post for email, or for pulling out a snippet to embed somewhere that won't run a Markdown renderer. If you're building a Markdown pipeline of your own, it's a quick way to see what remark-rehype produces before you wire it into anything.",
       },
     ],
     faq: [
       {
         question: 'Does it support GitHub Flavored Markdown?',
         answer:
-          'The converter handles standard Markdown syntax including headings, lists, code blocks, links, images, bold, italic, and blockquotes. GitHub-specific extensions like task lists and autolinked URLs are not currently supported.',
+          "No. The converter handles CommonMark: headings, lists, code blocks, links, images, emphasis, and blockquotes. GFM extensions aren't enabled, so pipe tables, task lists, strikethrough, and bare-URL autolinks pass through as plain text rather than being converted.",
       },
       {
         question: 'Can I use the HTML output in an email?',
         answer:
-          'The output is clean semantic HTML without CSS or JavaScript dependencies. Most email clients render semantic HTML correctly, though you may need to add inline styles for consistent email rendering across clients.',
+          'Yes, with one caveat. The HTML is clean and has no CSS or JavaScript dependencies, which email clients handle well, but it carries no styling at all. Most clients need inline styles to render consistently, so run the output through an inliner before sending.',
       },
       {
         question: 'Does it handle code syntax highlighting?',
         answer:
-          'Code blocks include language class attributes (e.g., class="language-js") so you can apply syntax highlighting with any client-side library like Prism.js or highlight.js. The converter does not add highlighting styles directly.',
+          'It records the language rather than applying the highlighting. A fenced block tagged js comes out as <code class="language-js">, which is exactly what Prism.js and highlight.js look for, so the colors come from whichever library you load on the page.',
       },
     ],
   },

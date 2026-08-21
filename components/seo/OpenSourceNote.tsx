@@ -14,7 +14,7 @@ export function OpenSourceNote({ heading, tool }: OpenSourceNoteProps) {
   const privacySentence = tool
     ? tool.serverSide
       ? 'The URL you enter is fetched by a Jamdesk server (browsers block reading other sites directly), parsed for metadata, and discarded — nothing is stored or logged.'
-      : 'It runs entirely in your browser. Your input is never uploaded, stored, or logged — you can verify this by opening the network tab in your browser developer tools while the tool runs.'
+      : 'It runs entirely in your browser. Your input is never uploaded, stored, or logged. Open the network tab in your developer tools while the tool runs and you can confirm that for yourself.'
     : 'They run in your browser wherever possible — your input is never uploaded, stored, or logged. Tools that must fetch other websites (like the OpenGraph Preview) do so through a Jamdesk server that stores nothing.'
   return (
     <>

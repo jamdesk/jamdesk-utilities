@@ -24,7 +24,7 @@ export interface Tool {
  * Must be a valid ISO `YYYY-MM-DD` so `new Date(LAST_REVIEWED)` parses as UTC midnight
  * — relied on by Last-Modified header, sitemap lastmod, and JSON-LD dateModified.
  */
-export const LAST_REVIEWED = '2026-06-12'
+export const LAST_REVIEWED = '2026-08-21'
 
 if (!/^\d{4}-\d{2}-\d{2}$/.test(LAST_REVIEWED) || isNaN(Date.parse(LAST_REVIEWED))) {
   throw new Error(`LAST_REVIEWED must be valid YYYY-MM-DD: got "${LAST_REVIEWED}"`)
@@ -70,11 +70,11 @@ export const tools: Tool[] = [
     icon: '✓',
     seoTitle: 'MDX Validator — Free Online MDX Syntax Checker | Jamdesk',
     seoDescription:
-      'Validate MDX files online. Catch syntax errors, unclosed JSX tags, and invalid frontmatter. Free, open source, client-side.',
+      'Validate MDX files online. Catch unclosed JSX tags, mismatched components, and broken expressions. Free, open source, client-side.',
     seoSubject: 'The MDX Validator',
     ctaText: 'Validate MDX on every deploy',
     ctaDescription:
-      'Jamdesk validates your MDX automatically — no broken docs.',
+      'Jamdesk validates your MDX automatically, so broken docs never ship.',
     llmsFacts: [
       'Uses the remark-mdx parser — the same parser as Next.js, Docusaurus, and Astro.',
       'If a file passes validation here, it compiles in your project.',
@@ -111,7 +111,7 @@ export const tools: Tool[] = [
       'Convert MDX to clean Markdown. Strip JSX components, imports, and exports. Free, open source, client-side.',
     seoSubject: 'The MDX to Markdown converter',
     ctaText: 'Jamdesk supports MDX natively',
-    ctaDescription: 'No conversion needed — Jamdesk renders MDX as-is.',
+    ctaDescription: 'No conversion needed. Jamdesk renders MDX as-is.',
     relatedSlugs: ['markdown-to-html', 'mdx-validator', 'mdx-viewer'],
     llmsFacts: [
       'Strips JSX components, imports, and exports while preserving Markdown content.',
