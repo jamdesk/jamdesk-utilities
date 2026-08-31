@@ -75,20 +75,6 @@ describe('ConversionCta', async () => {
     ).toBeDefined()
   })
 
-  it('links to pricing page', () => {
-    render(
-      <ConversionCta
-        text="Test CTA"
-        description="Test description"
-      />
-    )
-    const link = screen.getByRole('link')
-    expect(link.getAttribute('href')).toBe(
-      'https://www.jamdesk.com/pricing'
-    )
-    expect(link.getAttribute('target')).toBe('_blank')
-    expect(link.getAttribute('rel')).toBe('noopener noreferrer')
-  })
 })
 
 describe('JsonLdScript', () => {

@@ -1,6 +1,7 @@
 'use client'
 
 import { trackEvent } from '@/lib/analytics'
+import { signupUrlFromTool } from '@/lib/site'
 
 interface ConversionCtaProps {
   text: string
@@ -15,7 +16,7 @@ export function ConversionCta({
 }: ConversionCtaProps) {
   return (
     <a
-      href="https://www.jamdesk.com/pricing"
+      href={signupUrlFromTool(toolSlug)}
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => trackEvent('CTA Click', { tool: toolSlug ?? text })}
@@ -25,7 +26,7 @@ export function ConversionCta({
       <p className="text-sm text-muted-foreground">
         {description}{' '}
         <span className="inline-flex items-center gap-1 font-medium text-primary transition-transform group-hover:translate-x-0.5">
-          Learn more
+          Start for Free
           <svg
             width="14"
             height="14"
