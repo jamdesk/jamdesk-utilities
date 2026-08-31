@@ -74,7 +74,6 @@ describe('ConversionCta', async () => {
       screen.getByText(/Jamdesk formats your MDX automatically/)
     ).toBeDefined()
   })
-
 })
 
 describe('JsonLdScript', () => {
