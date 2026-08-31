@@ -80,4 +80,11 @@ describe('MDX Cheatsheet page', () => {
     expect(labels).toContain('Escaping curly braces')
     expect(labels).toContain('Markdown inside components (the gotcha)')
   })
+
+  it('offers a signup CTA', () => {
+    const html = renderToString(MdxCheatsheetPage())
+    expect(html).toContain('Start for Free')
+    expect(html).toContain('dashboard.jamdesk.com/signup')
+    expect(html).toContain('from=%2Futilities%2Fmdx-cheatsheet')
+  })
 })

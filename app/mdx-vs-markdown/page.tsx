@@ -4,6 +4,7 @@ import {
   mdxVsMarkdownFaqs,
   mdxVsMarkdownFaq3Parts,
 } from '@/lib/mdx-vs-markdown-faqs'
+import { ConversionCta } from '@/components/seo/ConversionCta'
 
 export default function MdxVsMarkdownPage() {
   return (
@@ -243,6 +244,14 @@ export default function MdxVsMarkdownPage() {
           Maintained by Jamdesk &middot; Last reviewed{' '}
           <time dateTime={LAST_REVIEWED}>{LAST_REVIEWED_FORMATTED}</time>
         </p>
+      </section>
+
+      <section className="mx-auto max-w-4xl px-6 pb-12">
+        <ConversionCta
+          text="Jamdesk renders MDX natively — no conversion step"
+          description="Keep your Markdown, add components when you need them, and deploy from your Git repo."
+          toolSlug="mdx-vs-markdown"
+        />
       </section>
     </>
   )

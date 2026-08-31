@@ -62,4 +62,9 @@ describe('MDX vs Markdown page', () => {
     expect(html).toContain('Maintained by Jamdesk')
     expect(html).toMatch(/<time dateTime="\d{4}-\d{2}-\d{2}"/)
   })
+
+  it('offers a signup CTA', () => {
+    expect(html).toContain('Start for Free')
+    expect(html).toContain('from=%2Futilities%2Fmdx-vs-markdown')
+  })
 })

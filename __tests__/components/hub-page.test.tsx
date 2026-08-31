@@ -96,4 +96,12 @@ describe('hub page', () => {
       expect(link.getAttribute('rel')).toBe('noopener noreferrer')
     }
   })
+
+  it('offers a signup CTA', () => {
+    render(<Home />)
+    const cta = screen.getByText('Start for Free').closest('a')
+    expect(cta?.getAttribute('href')).toContain('dashboard.jamdesk.com/signup')
+    // hub passes no toolSlug, so `from` is the hub path itself
+    expect(cta?.getAttribute('href')).toContain('from=%2Futilities')
+  })
 })

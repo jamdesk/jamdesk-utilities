@@ -4,6 +4,7 @@ import { tools } from '@/lib/tools'
 import { JsonLdScript } from '@/components/seo/JsonLdScript'
 import { FaqSection } from '@/components/seo/FaqSection'
 import { OpenSourceNote } from '@/components/seo/OpenSourceNote'
+import { ConversionCta } from '@/components/seo/ConversionCta'
 import { REPO_URL } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -208,6 +209,13 @@ export default function Home() {
           Frequently Asked Questions
         </h2>
         <FaqSection items={FAQ_ITEMS} />
+      </section>
+
+      <section className="mx-auto max-w-4xl px-6 pb-12">
+        <ConversionCta
+          text="These tools are the same engine behind Jamdesk docs"
+          description="Every formatter, validator and renderer here runs inside a real Jamdesk documentation site."
+        />
       </section>
     </>
   )

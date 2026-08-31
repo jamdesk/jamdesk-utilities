@@ -6,6 +6,7 @@ import {
 } from '@/lib/mdx-cheatsheet-data'
 import { CheatsheetCopyHandler } from '@/components/cheatsheet/CheatsheetCopyHandler'
 import { FaqSection } from '@/components/seo/FaqSection'
+import { ConversionCta } from '@/components/seo/ConversionCta'
 
 export default function MdxCheatsheetPage() {
   return (
@@ -137,6 +138,14 @@ export default function MdxCheatsheetPage() {
           Maintained by Jamdesk &middot; Last reviewed{' '}
           <time dateTime={LAST_REVIEWED}>{LAST_REVIEWED_FORMATTED}</time>
         </p>
+      </section>
+
+      <section className="mx-auto max-w-4xl px-6 pb-12">
+        <ConversionCta
+          text="Every component on this page works in Jamdesk docs"
+          description="Write MDX, push to Git, and Jamdesk renders it as a live documentation site."
+          toolSlug="mdx-cheatsheet"
+        />
       </section>
     </>
   )
